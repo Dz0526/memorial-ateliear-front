@@ -1,0 +1,7 @@
+_next
+*.json
+styles/
+node_modlus/
+package.json
+package-lock.json
+.next
