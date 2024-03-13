@@ -1,7 +1,7 @@
 import { Box, Card, CardBody, Heading, Stack, Text, Image, HStack, Spacer, Button } from '@chakra-ui/react';
 import { motion } from 'framer-motion'
-import Link from 'next/link';
-import React from 'react'
+import NextLink from 'next/link';
+import React, { useState } from 'react'
 import { UserCardBanner } from './UserCardBanner';
 
 type Member = {
@@ -16,7 +16,7 @@ type Props = {
 }
 
 export const ChekiCard = () => {
-  const [flip, setFlip] = React.useState(true);
+  const [flip, setFlip] = useState(true);
   return (
     <Box>
       {/* カードの領域 */}
@@ -103,13 +103,15 @@ const BackFace = () => {
             <UserCardBanner screenName='Taishi Naka' iconImageUrl={""} />
           </Stack>
         </Stack>
-        <Link href='/' passHref>
+        <NextLink href='/' passHref>
           <Button
-            position={'absolute'} bottom={4} right={4} size={'sm'} padding={6} as={'a'}
+            position={'absolute'} bottom={4} right={4} size={'sm'} padding={6}
+            // hack
+            as={'p'}
           >
             詳細を見る
           </Button>
-        </Link>
+        </NextLink>
       </CardBody>
     </Card>
   );
