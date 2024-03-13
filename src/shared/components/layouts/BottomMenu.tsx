@@ -12,7 +12,8 @@ export const BottomMenu = () => {
       w='100vw'
       justifyContent={'space-between'}
       borderTop={'1px'}
-      borderColor={'gray.100'}
+      borderColor={'gray.300'}
+      bg={'white'}
     >
       <Icon as={FiHome} boxSize={'32px'} />
       <Icon as={IoSearch} boxSize={'32px'} />
