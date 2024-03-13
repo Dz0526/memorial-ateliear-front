@@ -1,7 +1,8 @@
-import { Box, Card, CardBody, Heading, Stack, Text, Image, HStack, Spacer, Button, Flex, Avatar } from '@chakra-ui/react';
+import { Box, Card, CardBody, Heading, Stack, Text, Image, HStack, Spacer, Button } from '@chakra-ui/react';
 import { motion } from 'framer-motion'
 import Link from 'next/link';
 import React from 'react'
+import { UserCardBanner } from './UserCardBanner';
 
 type Member = {
   screenName: string;
@@ -111,22 +112,5 @@ const BackFace = () => {
         </Link>
       </CardBody>
     </Card>
-  );
-}
-
-type UserCardBannerProps = {
-  screenName: string;
-  iconImageUrl: string;
-}
-
-const UserCardBanner = ({ screenName, iconImageUrl }: UserCardBannerProps) => {
-  return (
-    <Flex flex='1' gap='3' alignItems='center' flexWrap='wrap'>
-      <Avatar size='sm' name={screenName} src={iconImageUrl} />
-
-      <Box>
-        <Heading size='sm'>{screenName}</Heading>
-      </Box>
-    </Flex>
   );
 }
