@@ -22,7 +22,9 @@ export const BottomMenu = () => {
       <Icon as={IoSearch} boxSize={'32px'} />
       <Icon as={MdOutlineAddBox} boxSize={'32px'} />
       <Icon as={BiPhotoAlbum} boxSize={'32px'} />
-      <Icon as={RiTreasureMapLine} boxSize={'32px'} />
+      <Link href='quest' passHref>
+        <Icon as={RiTreasureMapLine} boxSize={'32px'} />
+      </Link>
     </HStack>
   );
 };
