@@ -1,6 +1,7 @@
-import { Box, Center, Flex, Heading, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from '@chakra-ui/react';
+import { Box, Center, Flex, HStack, Heading, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from '@chakra-ui/react';
 import type * as next from 'next';
 import { ChekiCard } from 'shared/components/feed/ChekiCard';
+import { StickeyNoteCard } from 'shared/components/feed/StickeyNoteCard';
 import { Layout } from 'shared/components/layouts/Layout';
 
 const Feed: next.NextPageWithLayout = () => {
@@ -49,12 +50,14 @@ const RandomFeedTabPanel = () => {
       <VStack spacing={4} paddingBottom={36}>
 
         <ChekiCard />
+        <StickeyNoteCard />
         <ChekiCard />
 
       </VStack>
-    </TabPanel>
+    </TabPanel >
   );
 }
+
 
 Feed.getLayout = page => <Layout>{page}</Layout>;
 
