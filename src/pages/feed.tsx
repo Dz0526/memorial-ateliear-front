@@ -1,9 +1,9 @@
-import { Image, Box, Card, CardBody, Center, Flex, Heading, Spacer, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from '@chakra-ui/react';
-import type { NextPageWithLayout } from 'next';
+import { Box, Center, Flex, Heading, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from '@chakra-ui/react';
+import type * as next from 'next';
 import { ChekiCard } from 'shared/components/feed/ChekiCard';
 import { Layout } from 'shared/components/layouts/Layout';
 
-const Feed: NextPageWithLayout = () => {
+const Feed: next.NextPageWithLayout = () => {
   return (
     <Box minHeight={'100vh'} width={'100vw'}>
       <TemporaryHeader />
@@ -51,32 +51,8 @@ const RandomFeedTabPanel = () => {
         <ChekiCard />
         <ChekiCard />
 
-        <SoferCard />
-        <SoferCard />
       </VStack>
     </TabPanel>
-  );
-}
-
-const SoferCard = () => {
-  return (
-    <Card maxW='sm'>
-      <CardBody>
-        <Image
-          src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
-          alt='Green double couch with wooden legs'
-          borderRadius='sm'
-        />
-        <Stack mt='6' spacing='3'>
-          <Heading size='md'>Living room Sofa</Heading>
-          <Text>
-            This sofa is perfect for modern tropical spaces, baroque inspired
-            spaces, earthy toned spaces and for people who love a chic design with a
-            sprinkle of vintage design.
-          </Text>
-        </Stack>
-      </CardBody>
-    </Card>
   );
 }
 
