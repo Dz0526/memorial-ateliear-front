@@ -5,7 +5,7 @@ import React from 'react'
 export const ChekiCard = () => {
   const [flip, setFlip] = React.useState(true);
   return (
-    <Box width={'100%'}>
+    <Box>
       {/* カードの領域 */}
       <motion.div
         transition={{ duration: 0.3 }}
@@ -36,15 +36,18 @@ export const ChekiCard = () => {
           >
             <BackFace />
           </motion.div>
+
           {/* カードがある領域の高さを維持するため、不可視のカード要素を導入 */}
           <Box visibility={'hidden'}>
             <FrontFace />
           </Box>
+
         </motion.div>
       </motion.div>
     </Box>
   )
 }
+
 
 const FrontFace = () => {
   return (
