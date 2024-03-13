@@ -1,6 +1,18 @@
-import { Box, Card, CardBody, Heading, Stack, Text, Image } from '@chakra-ui/react';
+import { Box, Card, CardBody, Heading, Stack, Text, Image, HStack, Spacer, Button, Flex, Avatar } from '@chakra-ui/react';
 import { motion } from 'framer-motion'
+import Link from 'next/link';
 import React from 'react'
+
+type Member = {
+  screenName: string;
+  iconImageUrl: string;
+}
+type Props = {
+  imageUrl: string;
+  caption: string;
+  memoryTimeContext: string; // いつの思い出か
+  members: Member[];
+}
 
 export const ChekiCard = () => {
   const [flip, setFlip] = React.useState(true);
@@ -48,6 +60,11 @@ export const ChekiCard = () => {
   )
 }
 
+type FrontFaceProps = {
+  imageUrl: string;
+  caption: string;
+  memoryTimeContext: string;
+}
 
 const FrontFace = () => {
   return (
@@ -58,31 +75,58 @@ const FrontFace = () => {
           alt='Green double couch with wooden legs'
           borderRadius='sm'
         />
-        <Stack mt='6' spacing='3'>
-          <Heading size='md'>Front side</Heading>
-          <Text>
-            This sofa is perfect for modern tropical spaces, baroque inspired
-            spaces, earthy toned spaces and for people who love a chic design with a
-            sprinkle of vintage design.
-          </Text>
-        </Stack>
+        <HStack mt='4'>
+          <Heading size={"sm"} maxWidth={"70%"}>ふかふかソファに座ってたのしい談笑</Heading>
+          <Spacer />
+          <Text fontSize="xs">寮生活時代</Text>
+        </HStack>
       </CardBody>
     </Card>
   );
 }
+
+type BackFaceProps = {
+  memoryTimeContext: string;
+  members: Member[];
+}
+
 const BackFace = () => {
   return (
-    <Card maxW='sm' position='absolute' height={'100%'} width={'100%'}>
-      <CardBody>
-        <Stack mt='6' spacing='3'>
-          <Heading size='md'>Back side</Heading>
-          {/* <Text>
-            This sofa is perfect for modern tropical spaces, baroque inspired
-            spaces, earthy toned spaces and for people who love a chic design with a
-            sprinkle of vintage design.
-          </Text> */}
+    <Card maxW='sm' position='absolute' height={'100%'} width={'100%'} >
+      <CardBody overflow="hidden" position={'relative'}>
+        <Stack>
+          <Heading size='sm'>思い出のメンバー</Heading>
+          <Stack marginTop={2} paddingLeft={2} spacing={4}>
+            <UserCardBanner screenName='Daiki Ito' iconImageUrl={""} />
+            <UserCardBanner screenName='Manato Kato' iconImageUrl={""} />
+            <UserCardBanner screenName='Taishi Naka' iconImageUrl={""} />
+          </Stack>
         </Stack>
+        <Link href='/' passHref>
+          <Button
+            position={'absolute'} bottom={4} right={4} size={'sm'} padding={6} as={'a'}
+          >
+            詳細を見る
+          </Button>
+        </Link>
       </CardBody>
     </Card>
+  );
+}
+
+type UserCardBannerProps = {
+  screenName: string;
+  iconImageUrl: string;
+}
+
+const UserCardBanner = ({ screenName, iconImageUrl }: UserCardBannerProps) => {
+  return (
+    <Flex flex='1' gap='3' alignItems='center' flexWrap='wrap'>
+      <Avatar size='sm' name={screenName} src={iconImageUrl} />
+
+      <Box>
+        <Heading size='sm'>{screenName}</Heading>
+      </Box>
+    </Flex>
   );
 }
