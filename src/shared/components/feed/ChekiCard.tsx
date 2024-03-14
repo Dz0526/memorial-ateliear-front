@@ -1,29 +1,41 @@
-import { Box, Card, CardBody, Heading, Stack, Text, Image, HStack, Spacer, Button } from '@chakra-ui/react';
-import { motion } from 'framer-motion'
+import {
+  Box,
+  Card,
+  CardBody,
+  Heading,
+  Stack,
+  Text,
+  Image,
+  HStack,
+  Spacer,
+  Button,
+  BoxProps,
+} from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import NextLink from 'next/link';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { UserCardBanner } from './UserCardBanner';
 
 type Member = {
   screenName: string;
   iconImageUrl: string;
-}
+};
 type Props = {
   imageUrl: string;
   caption: string;
   memoryTimeContext: string; // いつの思い出か
   members: Member[];
-}
+} & BoxProps;
 
-export const ChekiCard = () => {
+export const ChekiCard = ({ ...rest }: BoxProps) => {
   const [flip, setFlip] = useState(true);
   return (
-    <Box>
+    <Box {...rest}>
       {/* カードの領域 */}
       <motion.div
         transition={{ duration: 0.3 }}
         animate={{ rotateY: flip ? 0 : 180 }}
-        onClick={() => setFlip((prevState) => !prevState)}
+        onClick={() => setFlip(prevState => !prevState)}
       >
         {/* both side content */}
         <motion.div
@@ -33,7 +45,12 @@ export const ChekiCard = () => {
         >
           {/* frontside content */}
           <motion.div
-            style={{ backfaceVisibility: 'hidden', position: 'absolute', width: '100%', height: '100%' }}
+            style={{
+              backfaceVisibility: 'hidden',
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+            }}
             transition={{ duration: 0.3 }}
             animate={{ rotateY: flip ? 0 : 180 }}
           >
@@ -42,7 +59,12 @@ export const ChekiCard = () => {
 
           {/* backside content */}
           <motion.div
-            style={{ backfaceVisibility: 'hidden', position: 'absolute', width: '100%', height: '100%' }}
+            style={{
+              backfaceVisibility: 'hidden',
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+            }}
             initial={{ rotateY: 180 }}
             animate={{ rotateY: flip ? 180 : 0 }}
             transition={{ duration: 0.3 }}
@@ -54,18 +76,17 @@ export const ChekiCard = () => {
           <Box visibility={'hidden'}>
             <FrontFace />
           </Box>
-
         </motion.div>
       </motion.div>
     </Box>
-  )
-}
+  );
+};
 
 type FrontFaceProps = {
   imageUrl: string;
   caption: string;
   memoryTimeContext: string;
-}
+};
 
 const FrontFace = () => {
   return (
@@ -77,35 +98,41 @@ const FrontFace = () => {
           borderRadius='sm'
         />
         <HStack mt='4'>
-          <Heading size={"sm"} maxWidth={"70%"}>ふかふかソファに座ってたのしい談笑</Heading>
+          <Heading size={'sm'} maxWidth={'70%'}>
+            ふかふかソファに座ってたのしい談笑
+          </Heading>
           <Spacer />
-          <Text fontSize="xs">寮生活時代</Text>
+          <Text fontSize='xs'>寮生活時代</Text>
         </HStack>
       </CardBody>
     </Card>
   );
-}
+};
 
 type BackFaceProps = {
   memoryTimeContext: string;
   members: Member[];
-}
+};
 
 const BackFace = () => {
   return (
-    <Card maxW='sm' position='absolute' height={'100%'} width={'100%'} >
-      <CardBody overflow="hidden" position={'relative'}>
+    <Card maxW='sm' position='absolute' height={'100%'} width={'100%'}>
+      <CardBody overflow='hidden' position={'relative'}>
         <Stack>
           <Heading size='sm'>思い出のメンバー</Heading>
           <Stack marginTop={2} paddingLeft={2} spacing={4}>
-            <UserCardBanner screenName='Daiki Ito' iconImageUrl={""} />
-            <UserCardBanner screenName='Manato Kato' iconImageUrl={""} />
-            <UserCardBanner screenName='Taishi Naka' iconImageUrl={""} />
+            <UserCardBanner screenName='Daiki Ito' iconImageUrl={''} />
+            <UserCardBanner screenName='Manato Kato' iconImageUrl={''} />
+            <UserCardBanner screenName='Taishi Naka' iconImageUrl={''} />
           </Stack>
         </Stack>
         <NextLink href='/' passHref>
           <Button
-            position={'absolute'} bottom={4} right={4} size={'sm'} padding={6}
+            position={'absolute'}
+            bottom={4}
+            right={4}
+            size={'sm'}
+            padding={6}
             // hack
             as={'p'}
           >
@@ -115,4 +142,4 @@ const BackFace = () => {
       </CardBody>
     </Card>
   );
-}
+};
