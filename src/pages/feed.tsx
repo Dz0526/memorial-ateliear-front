@@ -1,7 +1,21 @@
-import { Box, Center, Flex, HStack, Heading, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  Spacer,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import type * as next from 'next';
 import { ChekiCard } from 'shared/components/feed/ChekiCard';
 import { StickeyNoteCard } from 'shared/components/feed/StickeyNoteCard';
+import { Bridge } from 'shared/components/feed/bridge/Bridge';
 import { Layout } from 'shared/components/layouts/Layout';
 
 const Feed: next.NextPageWithLayout = () => {
@@ -14,14 +28,29 @@ const Feed: next.NextPageWithLayout = () => {
 };
 
 const TemporaryHeader = () => (
-  <Flex minWidth='max-content' alignItems='center' gap='2' paddingX='4' paddingTop='8'>
+  <Flex
+    minWidth='max-content'
+    alignItems='center'
+    gap='2'
+    paddingX='4'
+    paddingTop='8'
+  >
     <Box>
       <Heading size='lg'>Your Feed</Heading>
     </Box>
     <Spacer />
-    <Center bg='gray' h='16' w='16' alignContent='center' borderRadius='50%' marginRight='2'>image</Center>
+    <Center
+      bg='gray'
+      h='16'
+      w='16'
+      alignContent='center'
+      borderRadius='50%'
+      marginRight='2'
+    >
+      image
+    </Center>
   </Flex>
-)
+);
 
 const FeedTab = () => {
   return (
@@ -31,33 +60,36 @@ const FeedTab = () => {
           <Text fontWeight='semibold'>Random</Text>
         </Tab>
         <Tab>
-          <Text fontWeight='semibold'>Chronological</Text>
+          <Text fontWeight='semibold'>Bridge</Text>
         </Tab>
       </TabList>
       <TabPanels>
         <RandomFeedTabPanel />
-        <TabPanel>
-          Chronological panel content is here.
-        </TabPanel>
+        <BridgeFeedTabPanel />
       </TabPanels>
     </Tabs>
   );
-}
+};
 
 const RandomFeedTabPanel = () => {
   return (
     <TabPanel>
       <VStack spacing={4} paddingBottom={36}>
-
         <ChekiCard />
         <StickeyNoteCard />
         <ChekiCard />
-
       </VStack>
-    </TabPanel >
+    </TabPanel>
   );
-}
+};
 
+const BridgeFeedTabPanel = () => {
+  return (
+    <TabPanel>
+      <Bridge />
+    </TabPanel>
+  );
+};
 
 Feed.getLayout = page => <Layout>{page}</Layout>;
 
