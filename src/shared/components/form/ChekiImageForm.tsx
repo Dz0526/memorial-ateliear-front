@@ -7,10 +7,14 @@ import {
   Text,
   Flex,
 } from '@chakra-ui/react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
-export const ChekiImageForm = () => {
-  const [imgSrc, setImgSrc] = useState<string>();
+type Props = {
+  imgSrc: string;
+  onChange: (file: File) => void;
+};
+
+export const ChekiImageForm = ({ imgSrc, onChange }: Props) => {
   const ref = useRef<HTMLInputElement | null>(null);
   return (
     <Card
@@ -49,8 +53,9 @@ export const ChekiImageForm = () => {
         ref={ref}
         onChange={e => {
           if (e.target.files) {
+            imgSrc && URL.revokeObjectURL(imgSrc);
             const file = e.target.files[0];
-            setImgSrc(URL.createObjectURL(file));
+            onChange(file);
           }
         }}
       />

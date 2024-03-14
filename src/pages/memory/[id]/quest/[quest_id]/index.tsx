@@ -6,8 +6,41 @@ import { FaCheckCircle } from 'react-icons/fa';
 import { ChekiCard } from 'shared/components/feed/ChekiCard';
 import { ChekiImageForm } from 'shared/components/form/ChekiImageForm';
 import { mockedChekiProps } from 'shared/components/feed/ChekiProps';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { createContext } from 'shared/components/utils/react';
 
-const QuestDetail: NextPageWithLayout = () => {
+type QuestAchivementProgressContext = {
+  setPage: Dispatch<SetStateAction<number>>;
+  newImgSrc: string;
+  setNewImgSrc: Dispatch<SetStateAction<string>>;
+};
+
+const [QuestAchivementProgressProvider, useQuestAchivementProgressContext] =
+  createContext<QuestAchivementProgressContext>({
+    name: 'QuestAchivementProgressContext',
+  });
+
+const QuestAchivementProgress: NextPageWithLayout = () => {
+  const [page, setPage] = useState(0);
+  const [newImgSrc, setNewImgSrc] = useState<string>('');
+  return (
+    <QuestAchivementProgressProvider
+      value={{ setPage, newImgSrc, setNewImgSrc }}
+    >
+      {page == 0 ? (
+        <QuestDetail />
+      ) : page == 1 ? (
+        <QuestAchivementJudge />
+      ) : (
+        <></>
+      )}
+    </QuestAchivementProgressProvider>
+  );
+};
+
+const QuestDetail = () => {
+  const { setPage, newImgSrc, setNewImgSrc } =
+    useQuestAchivementProgressContext();
   return (
     <>
       <BackHeader href='/quest' />
@@ -27,8 +60,23 @@ const QuestDetail: NextPageWithLayout = () => {
           <AchivementConditionText text={'思い出のメンバーで集まる'} pl={4} />
           <AchivementConditionText text={'同じアングルの写真をとる'} pl={4} />
         </Box>
-        <ChekiImageForm />
-        <Button variant={'outline'} w={'70%'} alignSelf={'center'}>
+        <ChekiImageForm
+          imgSrc={newImgSrc}
+          onChange={file => {
+            setNewImgSrc(URL.createObjectURL(file));
+          }}
+        />
+        <Button
+          variant={'outline'}
+          w={'70%'}
+          alignSelf={'center'}
+          isLoading={newImgSrc.length == 0}
+          loadingText={'クエストを達成する'}
+          spinner={<></>}
+          onClick={() => {
+            setPage(1);
+          }}
+        >
           クエストを達成する
         </Button>
         <Flex flexDir={'column'} gap={'8px'}>
@@ -56,6 +104,14 @@ const AchivementConditionText = ({
   );
 };
 
-QuestDetail.getLayout = page => <Layout>{page}</Layout>;
+const QuestAchivementJudge = () => {
+  return (
+    <>
+      <BackHeader href='/quest' />
+    </>
+  );
+};
 
-export default QuestDetail;
+QuestAchivementProgress.getLayout = page => <Layout>{page}</Layout>;
+
+export default QuestAchivementProgress;
