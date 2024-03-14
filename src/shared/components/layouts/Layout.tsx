@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <Box>
+    <Box height={'100%'}>
       {children}
       <Box pos={'fixed'} bottom={0} zIndex={'banner'}>
         <BottomMenu />
