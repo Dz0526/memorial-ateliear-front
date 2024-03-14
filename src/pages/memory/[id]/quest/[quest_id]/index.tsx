@@ -4,6 +4,7 @@ import { Layout } from 'shared/components/layouts/Layout';
 import { BackHeader } from 'shared/components/layouts/BackHeader';
 import { FaCheckCircle } from 'react-icons/fa';
 import { ChekiCard } from 'shared/components/feed/ChekiCard';
+import { ChekiImageForm } from 'shared/components/form/ChekiImageForm';
 
 const QuestDetail: NextPageWithLayout = () => {
   return (
@@ -25,6 +26,7 @@ const QuestDetail: NextPageWithLayout = () => {
           <AchivementConditionText text={'思い出のメンバーで集まる'} pl={4} />
           <AchivementConditionText text={'同じアングルの写真をとる'} pl={4} />
         </Box>
+        <ChekiImageForm />
         <Button variant={'outline'} w={'70%'} alignSelf={'center'}>
           クエストを達成する
         </Button>
