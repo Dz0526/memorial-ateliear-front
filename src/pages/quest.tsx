@@ -1,4 +1,5 @@
-import { Box, HStack, Select, VStack } from '@chakra-ui/react';
+import { Box, Link, Select, VStack } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { NextPageWithLayout } from 'next';
 import { Header } from 'shared/components/layouts/Header';
 import { Layout } from 'shared/components/layouts/Layout';
@@ -42,7 +43,14 @@ const Quest: NextPageWithLayout = () => {
       </Select>
       <VStack pb={32}>
         {quests.map(quest => (
-          <QuestCard key={quest.title} title={quest.title} imgSrc={quest.src} />
+          <Link
+            as={NextLink}
+            key={quest.title}
+            href={'/memory/abc/quest/ccc'}
+            w={'100%'}
+          >
+            <QuestCard title={quest.title} imgSrc={quest.src} />
+          </Link>
         ))}
       </VStack>
     </Box>
