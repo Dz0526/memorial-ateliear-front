@@ -13,6 +13,7 @@ import {
 import { NextPageWithLayout } from 'next';
 import { useState } from 'react';
 import { ChekiCard } from 'shared/components/feed/ChekiCard';
+import { mockedChekiProps } from 'shared/components/feed/ChekiProps';
 import { Layout } from 'shared/components/layouts/Layout';
 
 const QuestCreate: NextPageWithLayout = () => {
@@ -21,7 +22,7 @@ const QuestCreate: NextPageWithLayout = () => {
       <Heading size={'lg'}>新しいクエストをつくる</Heading>
       <Flex flexDir={'column'} gap={'8px'}>
         <Text fontSize={'16px'}>起点となる思い出：</Text>
-        <ChekiCard transform={'rotate(2deg)'} />
+        <ChekiCard {...mockedChekiProps} transform={'rotate(2deg)'} />
       </Flex>
       <FormControl>
         <FormLabel>クエスト名</FormLabel>
