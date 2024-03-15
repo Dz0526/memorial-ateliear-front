@@ -5,6 +5,7 @@ import { BackHeader } from 'shared/components/layouts/BackHeader';
 import { FaCheckCircle } from 'react-icons/fa';
 import { ChekiCard } from 'shared/components/feed/ChekiCard';
 import { ChekiImageForm } from 'shared/components/form/ChekiImageForm';
+import { mockedChekiProps } from 'shared/components/feed/ChekiProps';
 
 const QuestDetail: NextPageWithLayout = () => {
   return (
@@ -34,7 +35,7 @@ const QuestDetail: NextPageWithLayout = () => {
           <Text fontSize={'20px'} fontWeight={'semibold'}>
             起点となる思い出
           </Text>
-          <ChekiCard transform={'rotate(2deg)'} />
+          <ChekiCard {...mockedChekiProps} transform={'rotate(2deg)'} />
         </Flex>
       </Flex>
     </>

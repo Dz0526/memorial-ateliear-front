@@ -1,6 +1,7 @@
-import { Box, Center, Flex, HStack, Heading, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from '@chakra-ui/react';
+import { Box, Center, Flex, Heading, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from '@chakra-ui/react';
 import type * as next from 'next';
 import { ChekiCard } from 'shared/components/feed/ChekiCard';
+import { mockedChekiProps } from 'shared/components/feed/ChekiProps';
 import { StickeyNoteCard } from 'shared/components/feed/StickeyNoteCard';
 import { Layout } from 'shared/components/layouts/Layout';
 
@@ -49,9 +50,9 @@ const RandomFeedTabPanel = () => {
     <TabPanel>
       <VStack spacing={4} paddingBottom={36}>
 
-        <ChekiCard />
+        <ChekiCard {...mockedChekiProps} />
         <StickeyNoteCard />
-        <ChekiCard />
+        <ChekiCard {...mockedChekiProps} />
 
       </VStack>
     </TabPanel >
