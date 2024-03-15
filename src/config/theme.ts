@@ -59,6 +59,7 @@ const colors = {
     800: '#000',
     900: '#000',
   },
+  danger: '#dc143c',
 };
 
 const theme = extendTheme({
