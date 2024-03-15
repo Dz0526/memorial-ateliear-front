@@ -10,11 +10,12 @@ import {
 import { useRef } from 'react';
 
 type Props = {
+  message: string | undefined;
   imgSrc: string;
   onChange: (file: File) => void;
 };
 
-export const ChekiImageForm = ({ imgSrc, onChange }: Props) => {
+export const ChekiImageForm = ({ message, imgSrc, onChange }: Props) => {
   const ref = useRef<HTMLInputElement | null>(null);
   return (
     <Card
@@ -41,7 +42,7 @@ export const ChekiImageForm = ({ imgSrc, onChange }: Props) => {
             flexDir={'column'}
           >
             <Text textAlign={'center'} fontWeight={'bold'}>
-              画像を入力してください
+              {message ?? '画像を入力してください'}
             </Text>
           </Flex>
         )}

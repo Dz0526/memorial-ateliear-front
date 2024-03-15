@@ -2,9 +2,9 @@ import React from 'react'
 import { Layout } from 'shared/components/layouts/Layout';
 import type * as next from 'next';
 import { BackAndKebabHeader } from 'shared/components/layouts/BackAndKebabHeader';
-import { Text, Flex, HStack, Image, Heading, Stack, Button, keyframes, Box } from '@chakra-ui/react';
-import { FaArrowRight } from "react-icons/fa6";
+import { Text, Flex, HStack, Image, Heading, Stack, Box } from '@chakra-ui/react';
 import { UserCardBanner } from 'shared/components/feed/UserCardBanner';
+import { RainbowButton } from 'shared/components/RainbowButton';
 
 const mockedMemory = {
   id: 'sampleMemoryId',
@@ -66,50 +66,12 @@ const Memory: next.NextPageWithLayout = () => {
           </Stack>
         </Stack>
 
-        <Box
-          padding={1}
-          alignSelf={'center'}
-          backgroundImage={
-            `repeating-linear-gradient(
-            to bottom right,
-            hsl(0deg, 80%, 50%),
-            hsl(60deg, 80%, 50%),
-            hsl(120deg, 80%, 50%),
-            hsl(180deg, 80%, 50%),
-            hsl(240deg, 80%, 50%),
-            hsl(300deg, 80%, 50%),
-            hsl(360deg, 80%, 50%) 50%
-          );`
-          }
-          backgroundSize={'1000% 1000%'}
-          // animation={`${fancyButton} 60s linear 0s infinite`}
-          animation={`${fancyButton} 50s infinite`}
-          borderRadius={'40'}
-        >
-          <Button
-            variant={'outline'}
-            alignSelf={'center'}
-            rightIcon={<FaArrowRight />}
-            backgroundColor={'white'}
-          // backdropFilter={'blur(1000px)'}
-          >
-            思い出からクエストを作成する
-          </Button>
-        </Box>
+        <RainbowButton>この思い出からクエストを作成する</RainbowButton>
       </Stack>
 
     </Box>
   );
 }
-
-const fancyButton = keyframes`
-from {
-  background-position: 0 0;
-}
-to {
-  background-position: 500% 500%;
-}
-`
 
 Memory.getLayout = page => <Layout>{page}</Layout>;
 export default Memory
