@@ -35,7 +35,6 @@ export const BridgeChekiCard = ({ ...rest }: BoxProps) => {
   const handleScroll = () => {
     if (ref.current) {
       const rect = ref.current?.getBoundingClientRect();
-      console.log(rect);
       if (rect.top < 240) {
         setVisible(false);
       }
