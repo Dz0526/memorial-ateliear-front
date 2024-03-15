@@ -9,15 +9,11 @@ import {
 import { Player } from '@lottiefiles/react-lottie-player';
 import { useMutation } from '@tanstack/react-query';
 import { LoginArgs, useLoginForm } from 'forms/auth/login';
-import { client } from 'libs/axios/client';
+import { clientForm } from 'libs/axios/client';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RHFErrorMessage } from 'shared/components/form/RHFErrorMessage';
-
-type LoginInput = {
-  username: string;
-  password: string;
-};
+import { setCookie } from 'nookies';
 
 type LoginResponse = {
   access_token: string;
@@ -25,19 +21,21 @@ type LoginResponse = {
 };
 
 const Login = () => {
-  const { register, control, handleSubmit } = useLoginForm();
+  const { register, control, handleSubmit, setValue } = useLoginForm();
   const [serverErrorMessage, setServerErrorMessage] = useState('');
   const router = useRouter();
   const name = router.query.username;
 
   const mutation = useMutation({
-    mutationFn: (input: LoginInput) =>
-      client
+    mutationFn: (input: URLSearchParams) =>
+      clientForm
         .post<LoginResponse>('/login/access-token', input)
         .then(res => res.data),
     onSuccess: data => {
       setServerErrorMessage('');
-      console.log(data);
+      setCookie({}, 'access-token', data.access_token);
+      localStorage.setItem('access-token', data.access_token);
+      router.push('/feed');
     },
     onError: error => {
       setServerErrorMessage('ユーザ名かパスワードが間違っています');
@@ -46,8 +44,15 @@ const Login = () => {
   });
 
   const onSubmit = (args: LoginArgs) => {
-    mutation.mutate(args);
+    const params = new URLSearchParams();
+    params.append('username', args.username);
+    params.append('password', args.password);
+    mutation.mutate(params);
   };
+
+  useEffect(() => {
+    if (name && typeof name == 'string') setValue('username', name);
+  }, [name, setValue]);
 
   return (
     <VStack
@@ -72,10 +77,9 @@ const Login = () => {
         <Input
           {...register('username')}
           placeholder='mandu'
-          defaultValue={name}
           disabled={name != undefined}
         />
-        <RHFErrorMessage name='name' control={control} />
+        <RHFErrorMessage name='username' control={control} />
       </FormControl>
       <FormControl w={'70%'}>
         <FormLabel>パスワード</FormLabel>

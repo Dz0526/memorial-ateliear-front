@@ -77,7 +77,7 @@ const Signup = () => {
       <FormControl w={'70%'}>
         <FormLabel>ユーザ名</FormLabel>
         <Input {...register('username')} placeholder='mandu' />
-        <RHFErrorMessage name='name' control={control} />
+        <RHFErrorMessage name='username' control={control} />
       </FormControl>
       <FormControl w={'70%'}>
         <FormLabel>メールアドレス</FormLabel>
