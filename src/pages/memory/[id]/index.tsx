@@ -66,7 +66,7 @@ const Memory: next.NextPageWithLayout = () => {
           </Stack>
         </Stack>
 
-        <RainbowButton />
+        <RainbowButton>この思い出からクエストを作成する</RainbowButton>
       </Stack>
 
     </Box>

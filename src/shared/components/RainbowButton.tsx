@@ -10,7 +10,7 @@ to {
 }
 `
 
-export const RainbowButton = () => {
+export const RainbowButton = ({ children }: { children: React.ReactNode }) => {
 
   return (<Box
     padding={1}
@@ -39,7 +39,7 @@ export const RainbowButton = () => {
       backgroundColor={'white'}
     // backdropFilter={'blur(1000px)'}
     >
-      思い出からクエストを作成する
+      {children}
     </Button>
   </Box>
   )
