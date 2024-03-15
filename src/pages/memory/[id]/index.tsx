@@ -33,7 +33,7 @@ const mockedMemory = {
 
 const Memory: next.NextPageWithLayout = () => {
   return (
-    <>
+    <Box paddingBottom={'40'}>
       <BackAndKebabHeader backHref='/feed' kebabHref='edit' />
       {/* Imamge */}
       <Flex justify="center">
@@ -83,7 +83,7 @@ const Memory: next.NextPageWithLayout = () => {
           }
           backgroundSize={'1000% 1000%'}
           // animation={`${fancyButton} 60s linear 0s infinite`}
-          animation={`${fancyButton} 60s infinite`}
+          animation={`${fancyButton} 50s infinite`}
           borderRadius={'40'}
         >
           <Button
@@ -91,13 +91,14 @@ const Memory: next.NextPageWithLayout = () => {
             alignSelf={'center'}
             rightIcon={<FaArrowRight />}
             backgroundColor={'white'}
+          // backdropFilter={'blur(1000px)'}
           >
             思い出からクエストを作成する
           </Button>
         </Box>
       </Stack>
 
-    </>
+    </Box>
   );
 }
 
