@@ -13,7 +13,6 @@ import {
   Checkbox,
   InputGroup,
   InputLeftElement,
-  InputRightElement,
 } from '@chakra-ui/react';
 import { UserCardBanner } from '../feed/UserCardBanner';
 
@@ -30,25 +29,21 @@ type Profile = {
 export const MembersSelectionForm = ({
   profiles,
   onChange,
+  isLoading,
 }: {
   profiles: Profile[];
   onChange: (profile: Profile[]) => void;
+  isLoading: boolean;
 }) => {
   const [selectedUsers, setSelectedUsers] = useState<Profile[]>([]);
   const [query, setQuery] = useState('');
-  // const searchResult = useQuery({
-  //   queryKey: ["items", "search", query],
-  //   queryFn: async () => {
-  //     // return await searchItems(query);
-  //   },
-  //   // placeholderData: keepPreviousData,
-  // });
+
   const searchResult =
     query == ''
       ? []
       : profiles.filter(member =>
-          member.screenName.toLowerCase().includes(query.toLowerCase()),
-        );
+        member.screenName.toLowerCase().includes(query.toLowerCase()),
+      );
 
   return (
     <Box>
@@ -81,7 +76,9 @@ export const MembersSelectionForm = ({
       >
         <HStack>
           <Text>検索結果</Text>
-          <Spinner size={'xs'} />
+          {
+            isLoading && <Spinner size={'xs'} />
+          }
         </HStack>
         {searchResult.length === 0 ? (
           <Text size={'xs'} color={'gray.900'}>

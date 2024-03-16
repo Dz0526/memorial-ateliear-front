@@ -46,7 +46,7 @@ const MemoryCreate: NextPageWithLayout = () => {
   const { register, control, handleSubmit, setValue } = useCreateImageForm();
   const [serverErrorMessage, setServerErrorMessage] = useState('');
   const [imageSrc, setImageSrc] = useState('');
-  const { data: profiles } = useQuery<GetProfilesResponse, AxiosError>({
+  const { data: profiles, isLoading } = useQuery<GetProfilesResponse, AxiosError>({
     queryKey: ['profiles'],
     queryFn: () =>
       authClient(localStorage.getItem('access-token') as string)
@@ -127,6 +127,7 @@ const MemoryCreate: NextPageWithLayout = () => {
               profiles.map(profile => profile.uuid),
             );
           }}
+          isLoading={isLoading}
         />
         <RHFErrorMessage name='members' control={control} />
       </Stack>

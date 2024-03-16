@@ -1,9 +1,5 @@
 import {
   Box,
-  Center,
-  Flex,
-  Heading,
-  Spacer,
   Tab,
   TabList,
   TabPanel,
@@ -21,6 +17,7 @@ import { Layout } from 'shared/components/layouts/Layout';
 import { AxiosError } from 'axios';
 import { authClient } from 'libs/axios/client';
 import { useQuery } from '@tanstack/react-query';
+import { Header } from 'shared/components/layouts/Header';
 
 export type Member = {
   uuid: string;
@@ -55,36 +52,13 @@ type Response = {
 const Feed: next.NextPageWithLayout = () => {
   return (
     <Box minHeight={'100vh'} width={'100vw'}>
-      <TemporaryHeader />
+      <Box px={6}>
+        <Header title='Your Feed' />
+      </Box>
       <FeedTab />
     </Box>
   );
 };
-
-const TemporaryHeader = () => (
-  <Flex
-    minWidth='max-content'
-    alignItems='center'
-    gap='2'
-    paddingX='4'
-    paddingTop='8'
-  >
-    <Box>
-      <Heading size='lg'>Your Feed</Heading>
-    </Box>
-    <Spacer />
-    <Center
-      bg='gray'
-      h='16'
-      w='16'
-      alignContent='center'
-      borderRadius='50%'
-      marginRight='2'
-    >
-      image
-    </Center>
-  </Flex>
-);
 
 const FeedTab = () => {
   return (
