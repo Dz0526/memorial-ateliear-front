@@ -6,7 +6,7 @@ import {
   Input,
   Text,
 } from '@chakra-ui/react';
-import { NextPageWithLayout } from 'next';
+import { GetServerSideProps, NextPageWithLayout } from 'next';
 import { ChekiImageForm } from 'shared/components/form/ChekiImageForm';
 import { Layout } from 'shared/components/layouts/Layout';
 import { MembersSelectionForm } from 'shared/components/form/MembersSelectionForm';
@@ -21,6 +21,7 @@ import { AxiosError } from 'axios';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { authClient, authClientForm } from 'libs/axios/client';
 import { useRouter } from 'next/router';
+import { getAuthorizationProps } from 'middleware/getAuthorizationProps';
 
 type CreateImageMemoryInput = {
   caption: string;
@@ -48,7 +49,10 @@ const MemoryCreate: NextPageWithLayout = () => {
   const router = useRouter();
   const [serverErrorMessage, setServerErrorMessage] = useState('');
   const [imageSrc, setImageSrc] = useState('');
-  const { data: profiles, isLoading } = useQuery<GetProfilesResponse, AxiosError>({
+  const { data: profiles, isLoading } = useQuery<
+    GetProfilesResponse,
+    AxiosError
+  >({
     queryKey: ['profiles'],
     queryFn: () =>
       authClient(localStorage.getItem('access-token') as string)
@@ -141,5 +145,6 @@ const MemoryCreate: NextPageWithLayout = () => {
 };
 
 MemoryCreate.getLayout = page => <Layout>{page}</Layout>;
+export const getServerSideProps: GetServerSideProps = getAuthorizationProps;
 
 export default MemoryCreate;

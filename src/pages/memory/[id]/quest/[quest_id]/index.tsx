@@ -10,7 +10,7 @@ import {
   VStack,
   keyframes,
 } from '@chakra-ui/react';
-import { NextPageWithLayout } from 'next';
+import { NextPageWithLayout, GetServerSideProps } from 'next';
 import { Layout } from 'shared/components/layouts/Layout';
 import { BackHeader } from 'shared/components/layouts/BackHeader';
 import { FaCheckCircle } from 'react-icons/fa';
@@ -34,6 +34,7 @@ import { authClient, authClientForm } from 'libs/axios/client';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Bridge } from 'pages/quest';
 import { ChekiCard } from 'shared/components/feed/ChekiCard';
+import { getAuthorizationProps } from 'middleware/getAuthorizationProps';
 
 type QuestAchivementProgressContext = {
   setPage: Dispatch<SetStateAction<number>>;
@@ -345,4 +346,5 @@ const QuestAchivementJudge = () => {
 
 QuestAchivementProgress.getLayout = page => <Layout>{page}</Layout>;
 
+export const getServerSideProps: GetServerSideProps = getAuthorizationProps;
 export default QuestAchivementProgress;
