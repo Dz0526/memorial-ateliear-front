@@ -145,11 +145,7 @@ const FrontFace = ({
   return (
     <Card maxW='sm'>
       <CardBody>
-        <Image
-          src={imageUrl}
-          alt='Green double couch with wooden legs'
-          borderRadius='sm'
-        />
+        <Image src={imageUrl} alt='Bridge Memory Image' borderRadius='sm' />
         <HStack mt='4'>
           <Heading size={'sm'} maxWidth={'70%'}>
             {caption}
