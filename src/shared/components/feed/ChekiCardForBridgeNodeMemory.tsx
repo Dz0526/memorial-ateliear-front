@@ -15,14 +15,14 @@ import { motion } from 'framer-motion';
 import NextLink from 'next/link';
 import React, { useState } from 'react';
 import { UserCardBanner } from './UserCardBanner';
-import { ImageMemory, Member, BridgeMemory } from 'pages/feed';
+import { BridgeMemory, Member } from 'pages/feed';
 
-type Props = ImageMemory & BoxProps;
+type Props = BridgeMemory & BoxProps;
 
-export const ChekiCard = ({
+export const ChekiCardForBridgeNodeMemory = ({
   uuid: memoryId,
   imageUrl,
-  caption,
+  text,
   timeLabel: memoryTimeContext,
   members,
   ...rest
@@ -54,7 +54,7 @@ export const ChekiCard = ({
             animate={{ rotateY: flip ? 0 : 180 }}
           >
             <FrontFace
-              {...{ imageUrl, caption, memoryTimeContext }}
+              {...{ imageUrl, text, memoryTimeContext, caption: text }}
               imageUrl={process.env.NEXT_PUBLIC_STORAGE_ORIGIN + imageUrl}
             />
           </motion.div>
@@ -78,7 +78,7 @@ export const ChekiCard = ({
           <Box visibility={'hidden'}>
             <FrontFace
               imageUrl={process.env.NEXT_PUBLIC_STORAGE_ORIGIN + imageUrl}
-              caption={caption}
+              caption={text}
               memoryTimeContext={memoryTimeContext}
             />
           </Box>
