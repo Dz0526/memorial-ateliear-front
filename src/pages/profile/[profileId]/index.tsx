@@ -35,7 +35,7 @@ const Memory: next.NextPageWithLayout = () => {
   return (
 
     <Box paddingBottom={'40'}>
-      <BackAndKebabHeader backHref='/feed' kebabHref='edit' />
+      <BackAndKebabHeader backHref='/profiles' kebabHref='edit' />
       {
         isLoading &&
         <Center minHeight={'50vh'}>
