@@ -29,7 +29,6 @@ export const Header = ({
         .get<Response>('/profiles/me')
         .then(res => res.data),
   });
-  console.log(`my profile: ${data}`)
 
   // Drawer
   const { isOpen, onOpen, onClose } = useDisclosure()

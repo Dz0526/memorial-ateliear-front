@@ -75,7 +75,7 @@ const Memory: next.NextPageWithLayout = () => {
                   <UserCardBanner
                     key={member.uuid}
                     {...member}
-                    iconImageUrl={member.iconUrl ? member.iconUrl : ''}
+                    iconImageUrl={member.iconUrl ? `${process.env.NEXT_PUBLIC_STORAGE_ORIGIN}${member.iconUrl}` : ''}
                   />
                 ))}
               </Stack>
