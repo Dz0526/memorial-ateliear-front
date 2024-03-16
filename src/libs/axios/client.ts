@@ -16,6 +16,14 @@ export const authClient = (token: string) =>
     },
   });
 
+export const authClientForm = (token: string) =>
+  axios.create({
+    baseURL: process.env.NEXT_PUBLIC_API_ORIGIN,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
 export const clientForm = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_ORIGIN,
   headers: {

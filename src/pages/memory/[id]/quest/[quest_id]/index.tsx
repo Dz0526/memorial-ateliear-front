@@ -77,6 +77,7 @@ const QuestDetail = () => {
           <AchivementConditionText text={'同じアングルの写真をとる'} pl={4} />
         </Box>
         <ChekiImageForm
+          message=''
           imgSrc={newImgSrc}
           onChange={file => {
             setNewImgSrc(URL.createObjectURL(file));
