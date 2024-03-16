@@ -59,9 +59,7 @@ const MemoryCreate: NextPageWithLayout = () => {
         .post('/image-memories/', input)
         .then(res => res.data),
     onSuccess: data => {
-      setServerErrorMessage(
-        'サーバでエラーが発生しました。もう一度お試しください。',
-      );
+      setServerErrorMessage('');
     },
     onError: error => {
       setServerErrorMessage(

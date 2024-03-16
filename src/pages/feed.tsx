@@ -15,7 +15,6 @@ import {
 import { getAuthorizationProps } from 'middleware/getAuthorizationProps';
 import type * as next from 'next';
 import { ChekiCard } from 'shared/components/feed/ChekiCard';
-import { mockedChekiProps } from 'shared/components/feed/ChekiProps';
 import { StickeyNoteCard } from 'shared/components/feed/StickeyNoteCard';
 import { Bridge } from 'shared/components/feed/bridge/Bridge';
 import { Layout } from 'shared/components/layouts/Layout';
@@ -23,20 +22,37 @@ import { AxiosError } from 'axios';
 import { authClient } from 'libs/axios/client';
 import { useQuery } from '@tanstack/react-query';
 
+export type Member = {
+  uuid: string;
+  screenName: string;
+  iconUrl: string | null;
+};
+
+export type TextMemory = {
+  memoryType: 'text-memory';
+  uuid: string;
+  timeLabel: string;
+  title: string;
+  content: string;
+  description: string;
+  members: Member[];
+};
+
+export type ImageMemory = {
+  memoryType: 'image-memory';
+  uuid: string;
+  imageUrl: string;
+  caption: string;
+  timeLabel: string;
+  members: Member[];
+  description: string;
+};
+
 type Response = {
-  username: string;
+  memories: (TextMemory | ImageMemory)[];
 };
 
 const Feed: next.NextPageWithLayout = () => {
-  const { data } = useQuery<Response, AxiosError>({
-    queryKey: ['user'],
-    queryFn: () =>
-      authClient(localStorage.getItem('access-token') as string)
-        .get<Response>('/text-memories/')
-        .then(res => res.data),
-  });
-  console.log(data);
-
   return (
     <Box minHeight={'100vh'} width={'100vw'}>
       <TemporaryHeader />
@@ -90,12 +106,24 @@ const FeedTab = () => {
 };
 
 const RandomFeedTabPanel = () => {
+  const { data } = useQuery<Response, AxiosError>({
+    queryKey: ['random-feed'],
+    queryFn: () =>
+      authClient(localStorage.getItem('access-token') as string)
+        .get<Response>('/memories/random')
+        .then(res => res.data),
+  });
   return (
     <TabPanel>
       <VStack spacing={4} paddingBottom={36}>
-        <ChekiCard {...mockedChekiProps} />
-        <StickeyNoteCard />
-        <ChekiCard {...mockedChekiProps} />
+        {data &&
+          data.memories.map(memory =>
+            memory.memoryType == 'image-memory' ? (
+              <ChekiCard {...(memory as ImageMemory)} />
+            ) : (
+              <StickeyNoteCard {...(memory as TextMemory)} />
+            ),
+          )}
       </VStack>
     </TabPanel>
   );
