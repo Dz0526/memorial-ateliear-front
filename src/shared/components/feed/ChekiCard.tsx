@@ -101,11 +101,11 @@ const FrontFace = ({ imageUrl, caption, memoryTimeContext }: FrontFaceProps) => 
           borderRadius='sm'
         />
         <HStack mt='4'>
-          <Heading size={'sm'} maxWidth={'70%'}>
+          <Heading variant={'handwriting'} size={'sm'} maxWidth={'70%'}>
             {caption}
           </Heading>
           <Spacer />
-          <Text fontSize='xs'>{memoryTimeContext}</Text>
+          <Text variant={'handwriting'} fontSize='xs'>{memoryTimeContext}</Text>
         </HStack>
       </CardBody>
     </Card>
