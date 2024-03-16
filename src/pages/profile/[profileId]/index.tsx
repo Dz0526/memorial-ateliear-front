@@ -79,7 +79,7 @@ const Memory: next.NextPageWithLayout = () => {
 
             {/* icon and name */}
             <VStack paddingTop={8} spacing={'4'}>
-              <Avatar src={`${process.env.NEXT_PUBLIC_IMAGE_ORIGIN}${data.iconUrl}`} name={data.screenName} boxSize={'100px'} />
+              <Avatar src={`${process.env.NEXT_PUBLIC_STORAGE_ORIGIN}${data.iconUrl}`} name={data.screenName} boxSize={'100px'} />
               <Heading size="md">{data.screenName}</Heading>
             </VStack>
 
@@ -124,7 +124,7 @@ const Memory: next.NextPageWithLayout = () => {
             <VStack spacing={'8'}>
 
               <VStack>
-                <Avatar src={`${process.env.NEXT_PUBLIC_IMAGE_ORIGIN}${data?.iconUrl}`} name={data?.screenName} boxSize={'100px'} />
+                <Avatar src={`${process.env.NEXT_PUBLIC_STORAGE_ORIGIN}${data?.iconUrl}`} name={data?.screenName} boxSize={'100px'} />
                 <Heading size="md">{data?.screenName}</Heading>
               </VStack>
 

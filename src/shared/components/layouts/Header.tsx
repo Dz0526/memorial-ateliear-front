@@ -44,7 +44,7 @@ export const Header = ({
         </Box>
         <Spacer />
         <button ref={btnRef} onClick={onOpen}>
-          <Avatar size={'lg'} src={data && `${process.env.NEXT_PUBLIC_IMAGE_ORIGIN}${data.iconUrl}`} />
+          <Avatar size={'lg'} src={data && `${process.env.NEXT_PUBLIC_STORAGE_ORIGIN}${data.iconUrl}`} />
         </button>
       </Flex>
 
@@ -59,7 +59,7 @@ export const Header = ({
           <DrawerCloseButton />
           <DrawerHeader>
             <HStack spacing={4} marginTop={8}>
-              <Avatar size={'lg'} src={data && `${process.env.NEXT_PUBLIC_IMAGE_ORIGIN}${data.iconUrl}`} />
+              <Avatar size={'lg'} src={data && `${process.env.NEXT_PUBLIC_STORAGE_ORIGIN}${data.iconUrl}`} />
               <Text>{data && data.screenName}</Text>
             </HStack>
           </DrawerHeader>
