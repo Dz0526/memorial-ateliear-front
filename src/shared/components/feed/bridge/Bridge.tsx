@@ -24,15 +24,25 @@ export const Bridge = () => {
   return (
     <VStack pb={32}>
       <Text fontWeight={'bold'} zIndex={1}>
-        映画オール後のホットスナックから始まる架け橋
+        温泉後のチキンから始まる架け橋
       </Text>
       <VStack position={'relative'} ref={ref}>
         <VStack spacing={'300px'} zIndex={1}>
-          <BridgeChekiCard />
-          <BridgeChekiCard />
-          <BridgeChekiCard />
-          <BridgeChekiCard />
-          <BridgeChekiCard />
+          <BridgeChekiCard
+            imageUrl='https://i.postimg.cc/Gt8cbL7B/image-10.png'
+            caption='温泉後のチキン'
+            memoryTimeContext='班長時代'
+          />
+          <BridgeChekiCard
+            imageUrl='https://i.postimg.cc/7L9PVQJL/image-9.png'
+            caption='シーシャチキン'
+            memoryTimeContext='マンズの合格発表後'
+          />
+          <BridgeChekiCard
+            imageUrl=''
+            caption='Kcloudにて'
+            memoryTimeContext='卒業前'
+          />
         </VStack>
         <Rainbow
           as={motion.div}

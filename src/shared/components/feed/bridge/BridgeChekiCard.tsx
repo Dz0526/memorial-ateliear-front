@@ -27,7 +27,16 @@ type Props = {
   members: Member[];
 } & BoxProps;
 
-export const BridgeChekiCard = ({ ...rest }: BoxProps) => {
+export const BridgeChekiCard = ({
+  imageUrl,
+  caption,
+  memoryTimeContext,
+  ...rest
+}: {
+  imageUrl: string;
+  caption: string;
+  memoryTimeContext: string;
+} & BoxProps) => {
   const [flip, setFlip] = useState(true);
   const [visible, setVisible] = useState(true);
   const ref = useRef<HTMLDivElement>(null);
@@ -69,7 +78,11 @@ export const BridgeChekiCard = ({ ...rest }: BoxProps) => {
             transition={{ duration: 0.3 }}
             animate={{ rotateY: flip ? 0 : 180 }}
           >
-            <FrontFace />
+            <FrontFace
+              imageUrl={imageUrl}
+              caption={caption}
+              memoryTimeContext={memoryTimeContext}
+            />
           </motion.div>
 
           {/* backside content */}
@@ -89,7 +102,11 @@ export const BridgeChekiCard = ({ ...rest }: BoxProps) => {
 
           {/* カードがある領域の高さを維持するため、不可視のカード要素を導入 */}
           <Box visibility={'hidden'}>
-            <FrontFace />
+            <FrontFace
+              imageUrl={imageUrl}
+              caption={caption}
+              memoryTimeContext={memoryTimeContext}
+            />
           </Box>
         </motion.div>
       </motion.div>
@@ -120,21 +137,25 @@ type FrontFaceProps = {
   memoryTimeContext: string;
 };
 
-const FrontFace = () => {
+const FrontFace = ({
+  imageUrl,
+  caption,
+  memoryTimeContext,
+}: FrontFaceProps) => {
   return (
     <Card maxW='sm'>
       <CardBody>
         <Image
-          src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
+          src={imageUrl}
           alt='Green double couch with wooden legs'
           borderRadius='sm'
         />
         <HStack mt='4'>
           <Heading size={'sm'} maxWidth={'70%'}>
-            ふかふかソファに座ってたのしい談笑
+            {caption}
           </Heading>
           <Spacer />
-          <Text fontSize='xs'>寮生活時代</Text>
+          <Text fontSize='xs'>{memoryTimeContext}</Text>
         </HStack>
       </CardBody>
     </Card>
