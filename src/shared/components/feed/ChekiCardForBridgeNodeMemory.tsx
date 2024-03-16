@@ -133,7 +133,11 @@ const BackFace = ({ memoryId, members }: BackFaceProps) => {
               <UserCardBanner
                 key={member.uuid}
                 screenName={member.screenName}
-                iconImageUrl={member.iconUrl ? member.iconUrl : ''}
+                iconImageUrl={
+                  member.iconUrl
+                    ? process.env.NEXT_PUBLIC_STORAGE_ORIGIN + member.iconUrl
+                    : ''
+                }
               />
             ))}
           </Stack>
