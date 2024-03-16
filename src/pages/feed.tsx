@@ -18,6 +18,7 @@ import { AxiosError } from 'axios';
 import { authClient } from 'libs/axios/client';
 import { useQuery } from '@tanstack/react-query';
 import { Header } from 'shared/components/layouts/Header';
+import { ChekiCardForBridgeNodeMemory } from 'shared/components/feed/ChekiCardForBridgeNodeMemory';
 
 export type Member = {
   uuid: string;
@@ -45,8 +46,19 @@ export type ImageMemory = {
   description: string;
 };
 
+export type BridgeMemory = {
+  memoryType: 'bridge-node-memory';
+  uuid: string;
+  imageUrl: string;
+  timeLabel: string;
+  timestamp: string;
+  members: Member[];
+  description: string;
+  text: string;
+};
+
 type Response = {
-  memories: (TextMemory | ImageMemory)[];
+  memories: (TextMemory | ImageMemory | BridgeMemory)[];
 };
 
 const Feed: next.NextPageWithLayout = () => {
@@ -94,6 +106,8 @@ const RandomFeedTabPanel = () => {
           data.memories.map(memory =>
             memory.memoryType == 'image-memory' ? (
               <ChekiCard {...(memory as ImageMemory)} />
+            ) : memory.memoryType == 'bridge-node-memory' ? (
+              <ChekiCardForBridgeNodeMemory {...(memory as BridgeMemory)} />
             ) : (
               <StickeyNoteCard {...(memory as TextMemory)} />
             ),
