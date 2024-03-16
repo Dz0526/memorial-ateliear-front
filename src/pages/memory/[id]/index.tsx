@@ -5,6 +5,7 @@ import { BackAndKebabHeader } from 'shared/components/layouts/BackAndKebabHeader
 import { Text, Flex, HStack, Image, Heading, Stack, Box } from '@chakra-ui/react';
 import { UserCardBanner } from 'shared/components/feed/UserCardBanner';
 import { RainbowButton } from 'shared/components/RainbowButton';
+import Link from 'next/link';
 
 const mockedMemory = {
   id: 'sampleMemoryId',
@@ -49,10 +50,10 @@ const Memory: next.NextPageWithLayout = () => {
 
         {/* caption and when */}
         <Stack>
-          <Heading size={'lg'}>{mockedMemory.caption}</Heading>
+          <Heading variant={'handwriting'} size={'lg'}>{mockedMemory.caption}</Heading>
           <HStack alignItems={'end'} spacing={'1'}>
-            <Text fontSize={'sm'} fontWeight={'bold'}>{mockedMemory.memoryTimeContext}</Text>
-            <Text fontSize={'sm'}>の思い出</Text>
+            <Text variant={'handwriting'} fontSize={'sm'} fontWeight={'bold'}>{mockedMemory.memoryTimeContext}</Text>
+            <Text variant={'handwriting'} fontSize={'sm'}>の思い出</Text>
           </HStack>
         </Stack>
 
@@ -66,7 +67,11 @@ const Memory: next.NextPageWithLayout = () => {
           </Stack>
         </Stack>
 
-        <RainbowButton>この思い出からクエストを作成する</RainbowButton>
+        <RainbowButton>
+          <Link href={`/memory/${mockedMemory.id}/quest/create`} passHref>
+            この思い出からクエストを作成する
+          </Link>
+        </RainbowButton>
       </Stack>
 
     </Box>
