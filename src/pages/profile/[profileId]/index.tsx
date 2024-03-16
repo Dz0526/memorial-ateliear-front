@@ -2,7 +2,7 @@ import React from 'react'
 import { Layout } from 'shared/components/layouts/Layout';
 import type * as next from 'next';
 import { BackAndKebabHeader } from 'shared/components/layouts/BackAndKebabHeader';
-import { Text, VStack, HStack, Image, Heading, Box, Button, Stack, Spinner, Center, Avatar } from '@chakra-ui/react';
+import { Text, VStack, HStack, Heading, Box, Button, Stack, Spinner, Center, Avatar } from '@chakra-ui/react';
 import { FaUserCheck } from "react-icons/fa";
 import { FaUserPlus } from "react-icons/fa6";
 import { AxiosError } from 'axios';

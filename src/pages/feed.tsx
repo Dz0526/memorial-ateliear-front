@@ -1,9 +1,5 @@
 import {
   Box,
-  Center,
-  Flex,
-  Heading,
-  Spacer,
   Tab,
   TabList,
   TabPanel,
