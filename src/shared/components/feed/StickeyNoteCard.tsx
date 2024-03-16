@@ -1,6 +1,7 @@
-import { HStack, Heading, Spacer, Text } from "@chakra-ui/react";
+import { HStack, Heading, Spacer, Text } from '@chakra-ui/react';
+import { TextMemory } from 'pages/feed';
 
-export const StickeyNoteCard = () => {
+export const StickeyNoteCard = ({ title, timeLabel }: TextMemory) => {
   return (
     <HStack
       width={'100%'}
@@ -9,12 +10,16 @@ export const StickeyNoteCard = () => {
       paddingX={4}
       paddingY={4}
       bgColor='#FFADAD'
-      shadow="md"
-      transform="rotate(1deg)"
+      shadow='md'
+      transform='rotate(1deg)'
     >
-      <Heading variant={'handwriting'} size='md' fontWeight='semibold'>早朝龍泉寺</Heading>
+      <Heading variant={'handwriting'} size='md' fontWeight='semibold'>
+        {title}
+      </Heading>
       <Spacer />
-      <Text variant={'handwriting'} fontSize='xs'>寮生活時代</Text>
+      <Text variant={'handwriting'} fontSize='xs'>
+        {timeLabel}
+      </Text>
     </HStack>
   );
-}
+};

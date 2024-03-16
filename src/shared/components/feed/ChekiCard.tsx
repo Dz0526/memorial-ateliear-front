@@ -15,22 +15,18 @@ import { motion } from 'framer-motion';
 import NextLink from 'next/link';
 import React, { useState } from 'react';
 import { UserCardBanner } from './UserCardBanner';
+import { ImageMemory, Member } from 'pages/feed';
 
-type Member = {
-  id: string;
-  screenName: string;
-  iconImageUrl: string;
-};
-type Props = {
-  memoryId: string;
-  imageUrl: string;
-  caption: string;
-  memoryTimeContext: string; // いつの思い出か
-  members: Member[];
-} & BoxProps;
+type Props = ImageMemory & BoxProps;
 
-
-export const ChekiCard = ({ memoryId, imageUrl, caption, memoryTimeContext, members, ...rest }: Props) => {
+export const ChekiCard = ({
+  uuid: memoryId,
+  imageUrl,
+  caption,
+  timeLabel: memoryTimeContext,
+  members,
+  ...rest
+}: Props) => {
   const [flip, setFlip] = useState(true);
   return (
     <Box {...rest}>
@@ -57,7 +53,10 @@ export const ChekiCard = ({ memoryId, imageUrl, caption, memoryTimeContext, memb
             transition={{ duration: 0.3 }}
             animate={{ rotateY: flip ? 0 : 180 }}
           >
-            <FrontFace {...{ imageUrl, caption, memoryTimeContext }} />
+            <FrontFace
+              {...{ imageUrl, caption, memoryTimeContext }}
+              imageUrl={process.env.NEXT_PUBLIC_STORAGE_ORIGIN + imageUrl}
+            />
           </motion.div>
 
           {/* backside content */}
@@ -77,7 +76,11 @@ export const ChekiCard = ({ memoryId, imageUrl, caption, memoryTimeContext, memb
 
           {/* カードがある領域の高さを維持するため、不可視のカード要素を導入 */}
           <Box visibility={'hidden'}>
-            <FrontFace imageUrl={imageUrl} caption={caption} memoryTimeContext={memoryTimeContext} />
+            <FrontFace
+              imageUrl={process.env.NEXT_PUBLIC_STORAGE_ORIGIN + imageUrl}
+              caption={caption}
+              memoryTimeContext={memoryTimeContext}
+            />
           </Box>
         </motion.div>
       </motion.div>
@@ -91,21 +94,23 @@ type FrontFaceProps = {
   memoryTimeContext: string;
 };
 
-const FrontFace = ({ imageUrl, caption, memoryTimeContext }: FrontFaceProps) => {
+const FrontFace = ({
+  imageUrl,
+  caption,
+  memoryTimeContext,
+}: FrontFaceProps) => {
   return (
     <Card maxW='sm'>
       <CardBody>
-        <Image
-          src={imageUrl}
-          alt='sample'
-          borderRadius='sm'
-        />
+        <Image src={imageUrl} alt='sample' borderRadius='sm' />
         <HStack mt='4'>
           <Heading variant={'handwriting'} size={'sm'} maxWidth={'70%'}>
             {caption}
           </Heading>
           <Spacer />
-          <Text variant={'handwriting'} fontSize='xs'>{memoryTimeContext}</Text>
+          <Text variant={'handwriting'} fontSize='xs'>
+            {memoryTimeContext}
+          </Text>
         </HStack>
       </CardBody>
     </Card>
@@ -124,11 +129,13 @@ const BackFace = ({ memoryId, members }: BackFaceProps) => {
         <Stack>
           <Heading size='sm'>思い出のメンバー</Heading>
           <Stack marginTop={2} paddingLeft={2} spacing={4}>
-            {
-              members.map((member) => (
-                <UserCardBanner key={member.id} screenName={member.screenName} iconImageUrl={member.iconImageUrl} />
-              ))
-            }
+            {members.map(member => (
+              <UserCardBanner
+                key={member.uuid}
+                screenName={member.screenName}
+                iconImageUrl={member.iconUrl ? member.iconUrl : ''}
+              />
+            ))}
           </Stack>
         </Stack>
         <NextLink href={`/memory/${memoryId}`} passHref>

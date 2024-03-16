@@ -27,6 +27,6 @@ export const useCreateImageForm = () => {
   return useForm<CreateImageMemoryArgs>({
     resolver: yupResolver(createImageMemorySchema),
     mode: 'onChange',
-    defaultValues: { timestamp: '', description: '' },
+    defaultValues: { timestamp: null, description: null },
   });
 };
