@@ -12,9 +12,9 @@ export const StickeyNoteCard = () => {
       shadow="md"
       transform="rotate(1deg)"
     >
-      <Heading size='md' fontWeight='semibold'>早朝龍泉寺</Heading>
+      <Heading variant={'handwriting'} size='md' fontWeight='semibold'>早朝龍泉寺</Heading>
       <Spacer />
-      <Text fontSize='xs'>寮生活時代</Text>
+      <Text variant={'handwriting'} fontSize='xs'>寮生活時代</Text>
     </HStack>
   );
 }

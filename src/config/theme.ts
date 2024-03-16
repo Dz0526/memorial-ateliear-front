@@ -12,8 +12,10 @@ const Checkbox = defineMultiStyleConfig({
         rounded: 'full',
       },
       label: {
-        fontWeight: 'bold',
-      },
+        fontFamily: 'Yusei Magic',
+        fontWeight: '400',
+        fontStyle: 'normal',
+      }
     },
   },
   sizes: {
@@ -27,6 +29,7 @@ const Checkbox = defineMultiStyleConfig({
       }),
     }),
   },
+  
 });
 
 const Button = defineStyleConfig({
@@ -62,11 +65,34 @@ const colors = {
   danger: '#dc143c',
 };
 
+const Heading = defineStyleConfig({
+  variants: {
+    'handwriting': {
+      fontFamily: 'Yusei Magic',
+      fontWeight: 'semibold',
+      fontStyle: 'normal',
+    }
+  }
+});
+
+const Text = defineStyleConfig({
+  variants: {
+    'handwriting': {
+      fontFamily: 'Yusei Magic',
+      fontWeight: 400,
+      fontStyle: 'normal',
+    }
+  }
+});
+
+
 const theme = extendTheme({
   colors,
   components: {
     Button,
     Checkbox,
+    Heading,
+    Text,
   },
 });
 
