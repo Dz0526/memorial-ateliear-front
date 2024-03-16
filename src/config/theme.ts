@@ -12,8 +12,10 @@ const Checkbox = defineMultiStyleConfig({
         rounded: 'full',
       },
       label: {
-        fontWeight: 'bold',
-      },
+        fontFamily: 'Yusei Magic',
+        fontWeight: '400',
+        fontStyle: 'normal',
+      }
     },
   },
   sizes: {
@@ -27,6 +29,7 @@ const Checkbox = defineMultiStyleConfig({
       }),
     }),
   },
+  
 });
 
 const Button = defineStyleConfig({
@@ -81,6 +84,7 @@ const Text = defineStyleConfig({
     }
   }
 });
+
 
 const theme = extendTheme({
   colors,
