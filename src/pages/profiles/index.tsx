@@ -54,7 +54,7 @@ const Memory: next.NextPageWithLayout = () => {
                   data.profiles.map(({ uuid, screenName, iconUrl, linkedUser }) => (
                     <Link key={uuid} href={`profile/${uuid}`} passHref>
                       <HStack>
-                        <UserCardBanner iconSize='md' iconImageUrl={iconUrl ? `${process.env.NEXT_PUBLIC_IMAGE_ORIGIN}${iconUrl}` : undefined} screenName={screenName} />
+                        <UserCardBanner iconSize='md' iconImageUrl={iconUrl ? `${process.env.NEXT_PUBLIC_STORAGE_ORIGIN}${iconUrl}` : undefined} screenName={screenName} />
                         {
                           linkedUser &&
                           <FaUserCheck color='green' size={20} />
