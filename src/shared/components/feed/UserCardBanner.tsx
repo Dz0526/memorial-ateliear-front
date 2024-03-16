@@ -1,9 +1,9 @@
-import { Avatar, Box, Flex, Heading } from "@chakra-ui/react";
+import { Avatar, Box, Flex, Heading } from '@chakra-ui/react';
 
 type Props = {
   screenName: string;
-  iconImageUrl: string;
-}
+  iconImageUrl: string | undefined;
+};
 
 export const UserCardBanner = ({ screenName, iconImageUrl }: Props) => {
   return (
@@ -15,4 +15,4 @@ export const UserCardBanner = ({ screenName, iconImageUrl }: Props) => {
       </Box>
     </Flex>
   );
-}
+};

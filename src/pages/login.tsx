@@ -3,6 +3,7 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Link,
   Text,
   VStack,
 } from '@chakra-ui/react';
@@ -14,6 +15,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { RHFErrorMessage } from 'shared/components/form/RHFErrorMessage';
 import { setCookie } from 'nookies';
+import NextLink from 'next/link';
 
 type LoginResponse = {
   access_token: string;
@@ -89,6 +91,9 @@ const Login = () => {
       <Button variant={'outline'} type='submit'>
         ログイン
       </Button>
+      <Link as={NextLink} href='/signup' passHref borderBottom={'1px'}>
+        新規登録の方はこちらのリンクから
+      </Link>
     </VStack>
   );
 };
