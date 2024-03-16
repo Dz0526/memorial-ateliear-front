@@ -5,7 +5,6 @@ import {
   Flex,
   FlexProps,
   FormControl,
-  FormLabel,
   Icon,
   Text,
   VStack,
@@ -16,20 +15,32 @@ import { Layout } from 'shared/components/layouts/Layout';
 import { BackHeader } from 'shared/components/layouts/BackHeader';
 import { FaCheckCircle } from 'react-icons/fa';
 import { ChekiImageForm } from 'shared/components/form/ChekiImageForm';
-import { mockedChekiProps } from 'shared/components/feed/ChekiProps';
-import { Dispatch, SetStateAction, useState } from 'react';
+import {
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { createContext } from 'shared/components/utils/react';
 import { MiniChekiCard } from 'shared/components/quest/achive/ChekiCard';
 import { motion } from 'framer-motion';
-import { BsLadder } from 'react-icons/bs';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { Rainbow } from 'shared/components/feed/bridge/Rainbow';
-import { ChekiCard } from 'shared/components/tmp/PastChekiCard';
+import { useRouter } from 'next/router';
+import { AxiosError } from 'axios';
+import { authClient, authClientForm } from 'libs/axios/client';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { Bridge } from 'pages/quest';
+import { ChekiCard } from 'shared/components/feed/ChekiCard';
 
 type QuestAchivementProgressContext = {
   setPage: Dispatch<SetStateAction<number>>;
   newImgSrc: string;
   setNewImgSrc: Dispatch<SetStateAction<string>>;
+  quest: Bridge;
+  ref: MutableRefObject<File | undefined>;
 };
 
 const [QuestAchivementProgressProvider, useQuestAchivementProgressContext] =
@@ -38,11 +49,22 @@ const [QuestAchivementProgressProvider, useQuestAchivementProgressContext] =
   });
 
 const QuestAchivementProgress: NextPageWithLayout = () => {
+  const ref = useRef<File>();
   const [page, setPage] = useState(0);
   const [newImgSrc, setNewImgSrc] = useState<string>('');
-  return (
+  const router = useRouter();
+  const quest_uuid = router.query.quest_id;
+  const { data: quest } = useQuery<Bridge, AxiosError>({
+    queryKey: [`quet-detail-${quest_uuid}`],
+    queryFn: () =>
+      authClient(localStorage.getItem('access-token') as string)
+        .get<Bridge>(`/bridges/${quest_uuid}`)
+        .then(res => res.data),
+    enabled: !!quest_uuid,
+  });
+  return quest ? (
     <QuestAchivementProgressProvider
-      value={{ setPage, newImgSrc, setNewImgSrc }}
+      value={{ setPage, newImgSrc, setNewImgSrc, quest, ref }}
     >
       {page == 0 ? (
         <QuestDetail />
@@ -52,62 +74,69 @@ const QuestAchivementProgress: NextPageWithLayout = () => {
         <></>
       )}
     </QuestAchivementProgressProvider>
+  ) : (
+    <></>
   );
 };
 
 const QuestDetail = () => {
-  const { setPage, newImgSrc, setNewImgSrc } =
+  const { setPage, newImgSrc, setNewImgSrc, quest, ref } =
     useQuestAchivementProgressContext();
   return (
     <>
       <BackHeader href='/quest' />
-      <Flex flexDir={'column'} gap={'32px'} p={4} pb={32}>
-        <Box>
-          <Text fontSize={'24px'} fontWeight={'semibold'}>
-            クエスト
-          </Text>
-          <Text fontSize={'32px'} fontWeight={'semibold'} pl={4}>
-            みんなで集まる
-          </Text>
-        </Box>
-        <Box>
-          <Text fontSize={'24px'} fontWeight={'semibold'}>
-            達成条件
-          </Text>
-          <AchivementConditionText text={'思い出のメンバーで集まる'} pl={4} />
-          <AchivementConditionText text={'同じアングルの写真をとる'} pl={4} />
-        </Box>
-        <ChekiImageForm
-          message='画像を選択する'
-          imgSrc={newImgSrc}
-          onChange={file => {
-            setNewImgSrc(URL.createObjectURL(file));
-          }}
-        />
-        <Button
-          variant={'outline'}
-          w={'70%'}
-          alignSelf={'center'}
-          isLoading={newImgSrc.length == 0}
-          loadingText={'クエストを達成する'}
-          spinner={<></>}
-          onClick={() => {
-            setPage(1);
-          }}
-        >
-          クエストを達成する
-        </Button>
-        <Flex flexDir={'column'} gap={'8px'}>
-          <Text fontSize={'20px'} fontWeight={'semibold'}>
-            起点となる思い出
-          </Text>
-          <ChekiCard
-            {...mockedChekiProps}
-            transform={'rotate(2deg)'}
-            imageUrl='https://i.postimg.cc/Gt8cbL7B/image-10.png'
+      {quest.originMemory.memoryType == 'image-memory' && (
+        <Flex flexDir={'column'} gap={'32px'} p={4} pb={32}>
+          <Box>
+            <Text fontSize={'24px'} fontWeight={'semibold'}>
+              クエスト
+            </Text>
+            <Text fontSize={'32px'} fontWeight={'semibold'} pl={4}>
+              {quest.name}
+            </Text>
+          </Box>
+          <Box>
+            <Text fontSize={'24px'} fontWeight={'semibold'}>
+              達成条件
+            </Text>
+            {quest.requirements.map(requiremnt => (
+              <AchivementConditionText
+                key={requiremnt.uuid}
+                text={requiremnt.detail}
+                pl={4}
+              />
+            ))}
+          </Box>
+          <ChekiImageForm
+            message='画像を選択する'
+            imgSrc={newImgSrc}
+            onChange={file => {
+              console.log(file);
+              ref.current = file;
+              setNewImgSrc(URL.createObjectURL(file));
+            }}
           />
+          <Button
+            variant={'outline'}
+            w={'70%'}
+            alignSelf={'center'}
+            isLoading={newImgSrc.length == 0}
+            loadingText={'クエストを達成する'}
+            spinner={<></>}
+            onClick={() => {
+              setPage(1);
+            }}
+          >
+            クエストを達成する
+          </Button>
+          <Flex flexDir={'column'} gap={'8px'}>
+            <Text fontSize={'20px'} fontWeight={'semibold'}>
+              起点となる思い出
+            </Text>
+            <ChekiCard {...quest.originMemory} transform={'rotate(2deg)'} />
+          </Flex>
         </Flex>
-      </Flex>
+      )}
     </>
   );
 };
@@ -145,8 +174,56 @@ const animationKeyframesNext = keyframes`
 const animationPrev = `${animationKeyframesPrev} 4s linear`;
 const animationNext = `${animationKeyframesNext} 4s linear`;
 
+type CreateBridgeNodeMemoryInput = {
+  bridgeUuid: string;
+  text: string;
+  achievedRequirementUuids: string[];
+  memberUuids: string[];
+  timeLabel: string;
+  timestamp: Date;
+  description: string;
+};
+
 const QuestAchivementJudge = () => {
-  const [checked, setChecked] = useState([false]);
+  const [success, setSuccess] = useState(false);
+  const { newImgSrc, quest, ref } = useQuestAchivementProgressContext();
+  const [checked, setChecked] = useState(
+    [...Array(quest.requirements.length)].map(() => false),
+  );
+  const mutation = useMutation({
+    mutationFn: (input: FormData) =>
+      authClientForm(localStorage.getItem('access-token') as string)
+        .post('/bridge-node-memories/', input)
+        .then(res => res.data),
+    onSuccess: data => {
+      console.log(data);
+      setSuccess(true);
+    },
+    onError: error => {
+      console.log(error);
+    },
+  });
+
+  useEffect(() => {
+    if (ref.current && checked.every(check => check == true)) {
+      console.log(ref.current);
+      const schema: CreateBridgeNodeMemoryInput = {
+        bridgeUuid: quest.uuid,
+        text: `${quest.name}達成`,
+        achievedRequirementUuids: quest.requirements.map(
+          requirement => requirement.uuid,
+        ),
+        memberUuids: quest.originMemory.members.map(member => member.uuid),
+        timeLabel: new Date().getFullYear().toString(),
+        timestamp: new Date(),
+        description: '',
+      };
+      const formData = new FormData();
+      formData.append('image', ref.current);
+      formData.append('schema', JSON.stringify(schema));
+      mutation.mutate(formData);
+    }
+  }, [checked]);
   return (
     <>
       <BackHeader href='/quest' />
@@ -156,7 +233,7 @@ const QuestAchivementJudge = () => {
             クエスト
           </Text> */}
           <Text fontSize={'20px'} fontWeight={'semibold'} pl={4}>
-            3人で集まる
+            {quest.name}
           </Text>
         </Box>
         {/* <Box>
@@ -169,18 +246,27 @@ const QuestAchivementJudge = () => {
         <FormControl>
           {/* <FormLabel>達成条件</FormLabel> */}
           <VStack alignItems={'start'}>
-            <Checkbox
-              variant={'primary'}
-              colorScheme='blackScheme'
-              size={'md'}
-              onChange={() => {
-                const copyChecked = checked.slice();
-                copyChecked[0] = true;
-                setChecked(copyChecked);
-              }}
-            >
-              同じアングルで写真をとる
-            </Checkbox>
+            {quest.requirements.map((requirement, index) => (
+              <Checkbox
+                key={requirement.uuid}
+                variant={'primary'}
+                colorScheme='blackScheme'
+                size={'md'}
+                onChange={e => {
+                  if (e.target.checked) {
+                    const copyChecked = checked.slice();
+                    copyChecked[index] = true;
+                    setChecked(copyChecked);
+                  } else {
+                    const copyChecked = checked.slice();
+                    copyChecked[index] = false;
+                    setChecked(copyChecked);
+                  }
+                }}
+              >
+                {requirement.detail}
+              </Checkbox>
+            ))}
             {/* <Checkbox
               variant={'primary'}
               size={'md'}
@@ -204,7 +290,12 @@ const QuestAchivementJudge = () => {
         >
           <MiniChekiCard
             maxW={'270px'}
-            imageUrl={'https://i.postimg.cc/Gt8cbL7B/image-10.png'}
+            imageUrl={
+              process.env.NEXT_PUBLIC_STORAGE_ORIGIN +
+              (quest.originMemory.memoryType == 'image-memory'
+                ? quest.originMemory.imageUrl
+                : '')
+            }
             zIndex={1}
             as={motion.div}
             animation={animationPrev}
@@ -213,14 +304,14 @@ const QuestAchivementJudge = () => {
             maxW={'270px'}
             position={'absolute'}
             top={250}
-            imageUrl={'https://i.postimg.cc/7L9PVQJL/image-9.png'}
+            imageUrl={newImgSrc}
             as={motion.div}
             animation={animationNext}
           />
           <motion.div
-            style={{ opacity: checked.every(v => v) ? 1 : 0 }}
-            transition={{ duration: 7 }}
-            animate={{ opacity: checked.every(v => v) ? 1 : 0 }}
+            style={{ opacity: success ? 1 : 0 }}
+            transition={{ duration: 4 }}
+            animate={{ opacity: success ? 1 : 0 }}
           >
             {/* <Icon as={BsLadder} boxSize={'64px'} color={'#A0522D'} /> */}
             <Rainbow
@@ -228,14 +319,14 @@ const QuestAchivementJudge = () => {
               height={'50px'}
               // position={'absolute'}
               // top={200}
-              opacity={checked.every(v => v) ? 1 : 0}
+              opacity={success ? 1 : 0}
               zIndex={3}
             />
           </motion.div>
           <Box
             position={'absolute'}
             bottom={0}
-            opacity={checked.every(v => v) ? 1 : 0}
+            opacity={success ? 1 : 0}
             zIndex={3}
           >
             <Player
