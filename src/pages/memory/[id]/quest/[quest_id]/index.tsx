@@ -15,7 +15,6 @@ import { NextPageWithLayout } from 'next';
 import { Layout } from 'shared/components/layouts/Layout';
 import { BackHeader } from 'shared/components/layouts/BackHeader';
 import { FaCheckCircle } from 'react-icons/fa';
-import { ChekiCard } from 'shared/components/feed/ChekiCard';
 import { ChekiImageForm } from 'shared/components/form/ChekiImageForm';
 import { mockedChekiProps } from 'shared/components/feed/ChekiProps';
 import { Dispatch, SetStateAction, useState } from 'react';
@@ -24,6 +23,8 @@ import { MiniChekiCard } from 'shared/components/quest/achive/ChekiCard';
 import { motion } from 'framer-motion';
 import { BsLadder } from 'react-icons/bs';
 import { Player } from '@lottiefiles/react-lottie-player';
+import { Rainbow } from 'shared/components/feed/bridge/Rainbow';
+import { ChekiCard } from 'shared/components/tmp/PastChekiCard';
 
 type QuestAchivementProgressContext = {
   setPage: Dispatch<SetStateAction<number>>;
@@ -77,7 +78,7 @@ const QuestDetail = () => {
           <AchivementConditionText text={'同じアングルの写真をとる'} pl={4} />
         </Box>
         <ChekiImageForm
-          message=''
+          message='画像を選択する'
           imgSrc={newImgSrc}
           onChange={file => {
             setNewImgSrc(URL.createObjectURL(file));
@@ -100,7 +101,11 @@ const QuestDetail = () => {
           <Text fontSize={'20px'} fontWeight={'semibold'}>
             起点となる思い出
           </Text>
-          <ChekiCard {...mockedChekiProps} transform={'rotate(2deg)'} />
+          <ChekiCard
+            {...mockedChekiProps}
+            transform={'rotate(2deg)'}
+            imageUrl='https://i.postimg.cc/Gt8cbL7B/image-10.png'
+          />
         </Flex>
       </Flex>
     </>
@@ -137,21 +142,21 @@ const animationKeyframesNext = keyframes`
 100% {opacity: 1; top: 50}
 `;
 
-const animationPrev = `${animationKeyframesPrev} 7s linear`;
-const animationNext = `${animationKeyframesNext} 7s linear`;
+const animationPrev = `${animationKeyframesPrev} 4s linear`;
+const animationNext = `${animationKeyframesNext} 4s linear`;
 
 const QuestAchivementJudge = () => {
-  const [checked, setChecked] = useState([false, false]);
+  const [checked, setChecked] = useState([false]);
   return (
     <>
       <BackHeader href='/quest' />
       <Flex flexDir={'column'} gap={'16px'} p={4} pb={32} height={'100%'}>
         <Box>
-          <Text fontSize={'16px'} fontWeight={'semibold'}>
+          {/* <Text fontSize={'16px'} fontWeight={'semibold'}>
             クエスト
-          </Text>
+          </Text> */}
           <Text fontSize={'20px'} fontWeight={'semibold'} pl={4}>
-            みんなで集まる
+            3人で集まる
           </Text>
         </Box>
         {/* <Box>
@@ -162,7 +167,7 @@ const QuestAchivementJudge = () => {
           <AchivementConditionText text={'同じアングルの写真をとる'} pl={4} />
         </Box> */}
         <FormControl>
-          <FormLabel>達成条件</FormLabel>
+          {/* <FormLabel>達成条件</FormLabel> */}
           <VStack alignItems={'start'}>
             <Checkbox
               variant={'primary'}
@@ -176,7 +181,7 @@ const QuestAchivementJudge = () => {
             >
               同じアングルで写真をとる
             </Checkbox>
-            <Checkbox
+            {/* <Checkbox
               variant={'primary'}
               size={'md'}
               colorScheme='blackScheme'
@@ -187,7 +192,7 @@ const QuestAchivementJudge = () => {
               }}
             >
               同じメンバーで写真をとる
-            </Checkbox>
+            </Checkbox> */}
           </VStack>
         </FormControl>
         <Flex
@@ -198,16 +203,16 @@ const QuestAchivementJudge = () => {
           flexGrow={1}
         >
           <MiniChekiCard
-            maxW={'200px'}
+            maxW={'270px'}
             imageUrl={'https://i.postimg.cc/Gt8cbL7B/image-10.png'}
             zIndex={1}
             as={motion.div}
             animation={animationPrev}
           />
           <MiniChekiCard
-            maxW={'200px'}
+            maxW={'270px'}
             position={'absolute'}
-            top={220}
+            top={250}
             imageUrl={'https://i.postimg.cc/7L9PVQJL/image-9.png'}
             as={motion.div}
             animation={animationNext}
@@ -217,7 +222,15 @@ const QuestAchivementJudge = () => {
             transition={{ duration: 7 }}
             animate={{ opacity: checked.every(v => v) ? 1 : 0 }}
           >
-            <Icon as={BsLadder} boxSize={'64px'} color={'#A0522D'} />
+            {/* <Icon as={BsLadder} boxSize={'64px'} color={'#A0522D'} /> */}
+            <Rainbow
+              width={'100px'}
+              height={'50px'}
+              // position={'absolute'}
+              // top={200}
+              opacity={checked.every(v => v) ? 1 : 0}
+              zIndex={3}
+            />
           </motion.div>
           <Box
             position={'absolute'}
