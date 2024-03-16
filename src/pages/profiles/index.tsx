@@ -2,7 +2,7 @@ import React from 'react'
 import { Layout } from 'shared/components/layouts/Layout';
 import type * as next from 'next';
 import { BackAndKebabHeader } from 'shared/components/layouts/BackAndKebabHeader';
-import { Heading, Stack, Box, Text, Button, HStack, Spacer } from '@chakra-ui/react';
+import { Heading, Stack, Box, Text, Button, } from '@chakra-ui/react';
 import { UserCardBanner } from 'shared/components/feed/UserCardBanner';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
