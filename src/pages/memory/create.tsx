@@ -20,6 +20,7 @@ import { useState } from 'react';
 import { AxiosError } from 'axios';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { authClient, authClientForm } from 'libs/axios/client';
+import { useRouter } from 'next/router';
 
 type CreateImageMemoryInput = {
   caption: string;
@@ -44,6 +45,7 @@ type GetProfilesResponse = {
 
 const MemoryCreate: NextPageWithLayout = () => {
   const { register, control, handleSubmit, setValue } = useCreateImageForm();
+  const router = useRouter();
   const [serverErrorMessage, setServerErrorMessage] = useState('');
   const [imageSrc, setImageSrc] = useState('');
   const { data: profiles, isLoading } = useQuery<GetProfilesResponse, AxiosError>({
@@ -60,6 +62,7 @@ const MemoryCreate: NextPageWithLayout = () => {
         .then(res => res.data),
     onSuccess: data => {
       setServerErrorMessage('');
+      router.push('/feed');
     },
     onError: error => {
       setServerErrorMessage(
