@@ -2,12 +2,13 @@ import React from 'react'
 import { Layout } from 'shared/components/layouts/Layout';
 import type * as next from 'next';
 import { BackAndKebabHeader } from 'shared/components/layouts/BackAndKebabHeader';
-import { Heading, Stack, Box, Text, Button, } from '@chakra-ui/react';
+import { Heading, Stack, Box, Text, Button, HStack, } from '@chakra-ui/react';
 import { UserCardBanner } from 'shared/components/feed/UserCardBanner';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { authClient } from 'libs/axios/client';
 import Link from 'next/link';
+import { FaUserCheck, } from 'react-icons/fa6';
 
 type Profile = {
   uuid: string;
@@ -50,9 +51,15 @@ const Memory: next.NextPageWithLayout = () => {
                   <Button size='sm' variant='outline'>プロフィールを作成する</Button>
                 </>
                 : (
-                  data.profiles.map(({ uuid, screenName, iconUrl }) => (
+                  data.profiles.map(({ uuid, screenName, iconUrl, linkedUser }) => (
                     <Link key={uuid} href={`profile/${uuid}`} passHref>
-                      <UserCardBanner iconSize='md' iconImageUrl={iconUrl ? `${process.env.NEXT_PUBLIC_IMAGE_ORIGIN}${iconUrl}` : undefined} screenName={screenName} />
+                      <HStack>
+                        <UserCardBanner iconSize='md' iconImageUrl={iconUrl ? `${process.env.NEXT_PUBLIC_IMAGE_ORIGIN}${iconUrl}` : undefined} screenName={screenName} />
+                        {
+                          linkedUser &&
+                          <FaUserCheck color='green' size={20} />
+                        }
+                      </HStack>
                     </Link>
                   ))
                 )
