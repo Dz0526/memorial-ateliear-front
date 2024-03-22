@@ -63,7 +63,16 @@ const Profile: next.NextPageWithLayout = () => {
     <>
 
       <Box paddingBottom={'40'}>
-        <BackAndKebabHeader />
+        <BackAndKebabHeader>
+          <MenuList>
+            <MenuItem>
+              <Link width={'100%'} height={'100%'} href={`${router.query.profileId}/edit`}>
+                プロフィールを編集する
+              </Link>
+            </MenuItem>
+            <MenuItem> プロフィールを削除（no implementation）</MenuItem>
+          </MenuList>
+        </BackAndKebabHeader>
         {
           isLoading &&
           <Center minHeight={'50vh'}>
