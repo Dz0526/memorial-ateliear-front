@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Layout } from 'shared/components/layouts/Layout';
 import type * as next from 'next';
 import { BackAndKebabHeader } from 'shared/components/layouts/BackAndKebabHeader';
-import { Text, VStack, HStack, Heading, Box, Button, Stack, Spinner, Center, Avatar, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useDisclosure, Input, FormLabel } from '@chakra-ui/react';
+import { Text, VStack, HStack, Heading, Box, Button, Stack, Spinner, Center, Avatar, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useDisclosure, Input, FormLabel, MenuList, Link, MenuItem } from '@chakra-ui/react';
 import { FaUserCheck } from "react-icons/fa";
 import { FaUserPlus } from "react-icons/fa6";
 import { AxiosError } from 'axios';
@@ -10,7 +10,7 @@ import { authClient } from 'libs/axios/client';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-type Profile = {
+type ProfileResponse = {
   uuid: string,
   screenName: string,
   iconUrl: string,
@@ -20,18 +20,18 @@ type Profile = {
   memo: string
 }
 
-const Memory: next.NextPageWithLayout = () => {
+const Profile: next.NextPageWithLayout = () => {
   const router = useRouter();
   const [username, setUsername] = useState('');
 
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { data, isLoading, error, refetch } = useQuery<Profile, AxiosError>({
+  const { data, isLoading, error, refetch } = useQuery<ProfileResponse, AxiosError>({
     queryKey: ['profile', router.query.profileId],
     queryFn: () =>
       authClient(localStorage.getItem('access-token') as string)
-        .get<Profile>(`/profiles/${router.query.profileId}`)
+        .get<ProfileResponse>(`/profiles/${router.query.profileId}`)
         .then(res => res.data),
 
   });
@@ -63,7 +63,7 @@ const Memory: next.NextPageWithLayout = () => {
     <>
 
       <Box paddingBottom={'40'}>
-        <BackAndKebabHeader backHref='/profiles' kebabHref='edit' />
+        <BackAndKebabHeader />
         {
           isLoading &&
           <Center minHeight={'50vh'}>
@@ -153,5 +153,5 @@ const Memory: next.NextPageWithLayout = () => {
   );
 }
 
-Memory.getLayout = page => <Layout>{page}</Layout>;
-export default Memory
+Profile.getLayout = page => <Layout>{page}</Layout>;
+export default Profile;
