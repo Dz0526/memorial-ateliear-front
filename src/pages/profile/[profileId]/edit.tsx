@@ -18,6 +18,8 @@ type ProfileResponse = {
   memo: string
 }
 
+// スクリーンネームとメモを更新するフォーム
+// リンクユーザの情報は更新しない
 const ProfileEdit: NextPageWithLayout = () => {
   const router = useRouter();
   // fixme: Is assertion needed?
@@ -40,9 +42,11 @@ const ProfileEdit: NextPageWithLayout = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: (formData: UpdateProfileArgs) => {
 
-      // fixme: Now, this is forced to unlink from User when updating Profile.
+      // リンクユーザの情報を更新しない
       if (isLinked) {
-        formData.linked_user_uuid = null;
+        formData.link_user_username = data.linkedUser.username;
+      } else {
+        formData.link_user_username = null;
       }
 
       return authClient(localStorage.getItem('access-token') as string)
@@ -68,7 +72,7 @@ const ProfileEdit: NextPageWithLayout = () => {
       <HStack paddingX={'4'} paddingY={'4'}>
         <Button onClick={() => { router.back() }} variant={'ghost'}>キャンセル</Button>
         <Spacer />
-        <Button type="submit" colorScheme="blue">
+        <Button type="submit" disabled={isPending} colorScheme="blue" width={'30%'}>
           {isPending
             ? <Spinner />
             : "保存する"
@@ -114,8 +118,5 @@ const ProfileEdit: NextPageWithLayout = () => {
     </Box >
   )
 }
-
-// memo: ナビゲーションいらない？
-// ProfileEdit.getLayout = page => <Layout>{page}</Layout>;
 
 export default ProfileEdit

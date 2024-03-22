@@ -1,4 +1,3 @@
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -6,7 +5,7 @@ import * as yup from 'yup';
 export type UpdateProfileArgs = {
   screen_name: string;
   memo?: string;
-  linked_user_uuid?: string | null;
+  link_user_username?: string | null;
 };
 
 export const editProfileFormSchema = yup
@@ -14,9 +13,11 @@ export const editProfileFormSchema = yup
   .required()
   .shape({
     screen_name: yup.string().required('入力は必須です'),
-    memo: yup.string().transform((value, original) => (original === null ? '':value)),
+    memo: yup
+      .string()
+      .transform((value, original) => (original === null ? '' : value)),
     // not using in form
-    linked_user_uuid: yup.string().nullable(),
+    link_user_username: yup.string().nullable(),
   });
 
 export const useUpdateProfileForm = () => {
