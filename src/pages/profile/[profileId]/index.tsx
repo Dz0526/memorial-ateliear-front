@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Layout } from 'shared/components/layouts/Layout';
 import type * as next from 'next';
 import { BackAndKebabHeader } from 'shared/components/layouts/BackAndKebabHeader';
 import { Text, VStack, HStack, Heading, Box, Button, Stack, Spinner, Center, Avatar, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useDisclosure, Input, FormLabel, MenuList, Link, MenuItem } from '@chakra-ui/react';
@@ -9,6 +8,7 @@ import { AxiosError } from 'axios';
 import { authClient } from 'libs/axios/client';
 import { useRouter } from 'next/router';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { UpdateProfileArgs } from 'forms/mutate-profile/update-profile';
 
 type ProfileResponse = {
   uuid: string,
@@ -37,7 +37,8 @@ const Profile: next.NextPageWithLayout = () => {
 
   const isLinked = data && data.linkedUser && data.linkedUser.username;
 
-  const { isOpen: isConnectModalOpen, onOpen: onConnectModalOpen, onClose: onConnectModalClose } = useDisclosure()
+  const { isOpen: isConnectModalOpen, onOpen: onConnectModalOpen, onClose: onConnectModalClose } = useDisclosure();
+  const { isOpen: isUnlinkModalOpen, onOpen: onUnlinkModalOpen, onClose: onUnlinkModalClose } = useDisclosure();
 
 
   return (
@@ -84,8 +85,13 @@ const Profile: next.NextPageWithLayout = () => {
               {
                 isLinked ? (
                   <HStack justifyContent={'center'}>
-                    <FaUserCheck color='green' size={16} />
-                    <Text fontWeight={'semibold'}>{data.linkedUser.username}</Text>
+                    <Button
+                      variant={'ghost'}
+                      onClick={onUnlinkModalOpen}
+                      leftIcon={<FaUserCheck color='green' size={16} />}
+                    >
+                      <Text fontWeight={'semibold'}>{data.linkedUser.username}</Text>
+                    </Button>
                   </HStack>
                 ) : (
                   <HStack justifyContent={'center'}>
@@ -105,7 +111,14 @@ const Profile: next.NextPageWithLayout = () => {
           </Stack>
         )}
       </Box>
-      <ConnectModal data={data} isOpen={isConnectModalOpen} onClose={() => { refetch(); onConnectModalClose(); }} />
+
+      {
+        data && (
+          data.linkedUser !== null
+            ? <UnlinkModal data={data} isOpen={isUnlinkModalOpen} onClose={() => { refetch(); onUnlinkModalClose(); }} />
+            : <ConnectModal data={data} isOpen={isConnectModalOpen} onClose={() => { refetch(); onConnectModalClose(); }} />
+        )
+      }
 
 
 
@@ -179,5 +192,77 @@ const ConnectModal = (
   )
 }
 
-Profile.getLayout = page => <Layout>{page}</Layout>;
+const UnlinkModal = (
+  { data, isOpen, onClose }: { data: ProfileResponse | undefined, isOpen: boolean, onClose: () => void }
+) => {
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => {
+
+      if (!data) return Promise.reject('data is not found');
+
+      const requestBody: UpdateProfileArgs = {
+        screen_name: data.screenName,
+        memo: data?.memo,
+        link_user_username: null // overwrite linked user to null
+      }
+
+      return authClient(localStorage.getItem('access-token') as string)
+        .put(`/profiles/${data.uuid}`, requestBody)
+        .then(res => res.data)
+    },
+    onSuccess: () => {
+      setErrorMessage('');
+      setSuccessMessage('紐づけを解除しました。')
+    },
+    onError: error => {
+      setErrorMessage('更新に失敗しました。');
+      console.log(error);
+    },
+  });
+
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} size={"xs"} >
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>紐づけを解除しますか？</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <VStack spacing={'8'}>
+
+            <HStack spacing={'4'}>
+              <Avatar src={`${process.env.NEXT_PUBLIC_STORAGE_ORIGIN}${data?.iconUrl}`} name={data?.screenName} size={'md'} />
+              <Heading size="md">{data?.screenName}</Heading>
+            </HStack>
+
+            <VStack>
+              <Text>現在紐付いているユーザ：</Text>
+              <Text fontWeight={'bold'}>{data?.linkedUser.username}</Text>
+            </VStack>
+
+            <Button
+              colorScheme='red' // means danger
+              disabled={isPending}
+              onClick={() => {
+                mutate();
+              }}>つながりを解除</Button>
+          </VStack>
+        </ModalBody>
+
+        <ModalFooter>
+          {
+            errorMessage !== '' && <Text color={'red.400'}>{errorMessage}</Text>
+          }
+          {
+            successMessage !== '' && <Text color={'green'}>{successMessage}</Text>
+          }
+        </ModalFooter>
+      </ModalContent>
+    </Modal >
+  )
+}
+
 export default Profile;
