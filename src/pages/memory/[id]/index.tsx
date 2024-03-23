@@ -34,7 +34,7 @@ const Memory: next.NextPageWithLayout = () => {
   });
   return (
     <Box paddingBottom={'40'}>
-      <BackAndKebabHeader backHref='/feed' kebabHref='edit' />
+      <BackAndKebabHeader />
       {/* Imamge */}
       {data && (
         <>
