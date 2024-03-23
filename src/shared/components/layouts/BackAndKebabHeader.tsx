@@ -1,11 +1,12 @@
-
-import { Box, Flex, Icon, Link, Spacer } from '@chakra-ui/react';
+import { Box, Flex, Icon, Menu, MenuButton, Spacer } from '@chakra-ui/react';
 import { IoIosArrowBack } from 'react-icons/io';
-import { BsThreeDotsVertical } from 'react-icons/bs';
-import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
-export const BackAndKebabHeader = ({ kebabHref }: { backHref: string; kebabHref: string; }) => {
+type Props = {
+  children?: React.ReactNode
+}
+export const BackAndKebabHeader = ({ children }: Props) => {
   const router = useRouter();
   return (
     <Flex borderBottom={'1px'} borderColor={'gray.300'}>
@@ -13,9 +14,14 @@ export const BackAndKebabHeader = ({ kebabHref }: { backHref: string; kebabHref:
         <Icon as={IoIosArrowBack} boxSize={'32px'} />
       </Box>
       <Spacer />
-      <Link as={NextLink} href={kebabHref} passHref paddingY={'2'} paddingX={'2'}>
-        <Icon as={BsThreeDotsVertical} boxSize={'32px'} />
-      </Link>
+      {children &&
+        <Menu>
+          <MenuButton paddingY={'2'} paddingX={'2'}>
+            <Icon as={BsThreeDotsVertical} boxSize={'32px'} />
+          </MenuButton>
+          {children}
+        </Menu>
+      }
     </Flex>
   );
 };

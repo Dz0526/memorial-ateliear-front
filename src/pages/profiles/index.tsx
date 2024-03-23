@@ -26,7 +26,7 @@ type Response = {
   count: number;
 };
 
-const Memory: next.NextPageWithLayout = () => {
+const Profiles: next.NextPageWithLayout = () => {
   const { data } = useQuery<Response, AxiosError>({
     queryKey: ['myProfile'],
     queryFn: () =>
@@ -37,7 +37,7 @@ const Memory: next.NextPageWithLayout = () => {
 
   return (
     <Box paddingBottom={'40'}>
-      <BackAndKebabHeader backHref='/feed' kebabHref='edit' />
+      <BackAndKebabHeader />
       <Stack spacing={'8'} paddingX={'4'} paddingBottom={40} marginTop={'8'}>
         {/* members */}
         <Heading size={'md'}>あなたが作成したプロフィール一覧</Heading>
@@ -75,7 +75,7 @@ const Memory: next.NextPageWithLayout = () => {
   );
 };
 
-Memory.getLayout = page => <Layout>{page}</Layout>;
+Profiles.getLayout = page => <Layout>{page}</Layout>;
 export const getServerSideProps: next.GetServerSideProps =
   getAuthorizationProps;
-export default Memory;
+export default Profiles;
