@@ -9,6 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { authClient } from 'libs/axios/client';
 import { getAuthorizationProps } from 'middleware/getAuthorizationProps';
+import { useState } from 'react';
 
 type Requirement = {
   uuid: string;
@@ -28,19 +29,24 @@ type GetBridgesResponse = {
 };
 
 const Quest: NextPageWithLayout = () => {
+  const [category, setCategory] = useState('not_achieved');
   const { data } = useQuery<GetBridgesResponse, AxiosError>({
-    queryKey: ['bridges'],
+    queryKey: [category + '-bridges'],
     queryFn: () =>
       authClient(localStorage.getItem('access-token') as string)
-        .get<GetBridgesResponse>('/bridges/')
+        .get<GetBridgesResponse>(`/bridges/?filter=${category}`)
         .then(res => res.data),
   });
   return (
     <Box px={4}>
       <Header title='Your Quests' />
-      <Select w={'150px'} my={'16px'}>
-        <option value={'not_complete'}>未達成</option>
-        <option value={'complete'}>達成</option>
+      <Select
+        w={'150px'}
+        my={'16px'}
+        onChange={e => setCategory(e.target.value)}
+      >
+        <option value={'not_achieved'}>未達成</option>
+        <option value={'achieved'}>達成</option>
       </Select>
       <VStack pb={32}>
         {data &&
