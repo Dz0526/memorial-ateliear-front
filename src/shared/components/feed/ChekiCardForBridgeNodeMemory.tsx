@@ -142,7 +142,7 @@ const BackFace = ({ memoryId, members }: BackFaceProps) => {
             ))}
           </Stack>
         </Stack>
-        <NextLink href={`/memory/${memoryId}`} passHref>
+        <NextLink href={`/bridge-memory/${memoryId}`} passHref>
           <Button
             position={'absolute'}
             bottom={4}
