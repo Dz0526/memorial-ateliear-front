@@ -17,18 +17,18 @@ import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { authClient } from 'libs/axios/client';
 import { useRouter } from 'next/router';
-import { BridgeMemory } from 'pages/feed';
+import { QuestAchievedMemory } from 'pages/feed';
 import { AxiosError } from 'axios';
 import { getAuthorizationProps } from 'middleware/getAuthorizationProps';
 
 const Memory: next.NextPageWithLayout = () => {
   const router = useRouter();
   const uuid = router.query.id;
-  const { data } = useQuery<BridgeMemory, AxiosError>({
+  const { data } = useQuery<QuestAchievedMemory, AxiosError>({
     queryKey: [`bridgge-memory-detail-${uuid}`],
     queryFn: () =>
       authClient(localStorage.getItem('access-token') as string)
-        .get<BridgeMemory>(`/bridge-node-memories/${uuid}`)
+        .get<QuestAchievedMemory>(`/quest-achievement-memories/${uuid}`)
         .then(res => res.data),
     enabled: !!uuid,
   });
@@ -71,7 +71,7 @@ const Memory: next.NextPageWithLayout = () => {
             <Stack spacing={4}>
               <Heading size={'sm'}>思い出のメンバー</Heading>
               <Stack spacing={4} paddingLeft={2}>
-                {data.members.map(member => (
+                {data.member_profiles.map(member => (
                   <UserCardBanner
                     key={member.uuid}
                     {...member}

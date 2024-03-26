@@ -16,7 +16,7 @@ type Requirement = {
   detail: string;
 };
 
-export type Bridge = {
+export type Quest = {
   uuid: string;
   name: string;
   originMemory: ImageMemory | TextMemory;
@@ -24,17 +24,17 @@ export type Bridge = {
 };
 
 type GetBridgesResponse = {
-  bridges: Bridge[];
+  quests: Quest[];
   count: number;
 };
 
 const Quest: NextPageWithLayout = () => {
   const [category, setCategory] = useState('not_achieved');
   const { data } = useQuery<GetBridgesResponse, AxiosError>({
-    queryKey: [category + '-bridges'],
+    queryKey: [category + '-quests'],
     queryFn: () =>
       authClient(localStorage.getItem('access-token') as string)
-        .get<GetBridgesResponse>(`/bridges/?filter=${category}`)
+        .get<GetBridgesResponse>(`/quests/?filter=${category}`)
         .then(res => res.data),
   });
   return (
@@ -50,20 +50,20 @@ const Quest: NextPageWithLayout = () => {
       </Select>
       <VStack pb={32}>
         {data &&
-          data.bridges.map(
-            bridge =>
-              bridge.originMemory.memoryType == 'image-memory' && (
+          data.quests.map(
+            quest =>
+              quest.originMemory.memoryType == 'image-memory' && (
                 <Link
                   as={NextLink}
-                  key={bridge.uuid}
-                  href={`/memory/${bridge.originMemory.uuid}/quest/${bridge.uuid}`}
+                  key={quest.uuid}
+                  href={`/memory/${quest.originMemory.uuid}/quest/${quest.uuid}`}
                   w={'100%'}
                 >
                   <QuestCard
-                    title={bridge.name}
+                    title={quest.name}
                     imgSrc={
                       process.env.NEXT_PUBLIC_STORAGE_ORIGIN +
-                      bridge.originMemory.imageUrl
+                      quest.originMemory.imageUrl
                     }
                   />
                 </Link>

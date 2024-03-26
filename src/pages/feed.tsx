@@ -33,7 +33,7 @@ export type TextMemory = {
   title: string;
   content: string;
   description: string;
-  members: Member[];
+  member_profiles: Member[];
 };
 
 export type ImageMemory = {
@@ -42,23 +42,23 @@ export type ImageMemory = {
   imageUrl: string;
   caption: string;
   timeLabel: string;
-  members: Member[];
+  member_profiles: Member[];
   description: string;
 };
 
-export type BridgeMemory = {
-  memoryType: 'bridge-node-memory';
+export type QuestAchievedMemory = {
+  memoryType: 'quest-achievement-memory';
   uuid: string;
   imageUrl: string;
   timeLabel: string;
   timestamp: string;
-  members: Member[];
+  member_profiles: Member[];
   description: string;
   text: string;
 };
 
 type Response = {
-  memories: (TextMemory | ImageMemory | BridgeMemory)[];
+  memories: (TextMemory | ImageMemory | QuestAchievedMemory)[];
 };
 
 const Feed: next.NextPageWithLayout = () => {
@@ -106,8 +106,10 @@ const RandomFeedTabPanel = () => {
           data.memories.map(memory =>
             memory.memoryType == 'image-memory' ? (
               <ChekiCard {...(memory as ImageMemory)} />
-            ) : memory.memoryType == 'bridge-node-memory' ? (
-              <ChekiCardForBridgeNodeMemory {...(memory as BridgeMemory)} />
+            ) : memory.memoryType == 'quest-achievement-memory' ? (
+              <ChekiCardForBridgeNodeMemory
+                {...(memory as QuestAchievedMemory)}
+              />
             ) : (
               <StickeyNoteCard {...(memory as TextMemory)} />
             ),

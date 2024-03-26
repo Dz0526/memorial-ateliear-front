@@ -15,16 +15,16 @@ import { motion } from 'framer-motion';
 import NextLink from 'next/link';
 import React, { useState } from 'react';
 import { UserCardBanner } from './UserCardBanner';
-import { BridgeMemory, Member } from 'pages/feed';
+import { QuestAchievedMemory, Member } from 'pages/feed';
 
-type Props = BridgeMemory & BoxProps;
+type Props = QuestAchievedMemory & BoxProps;
 
 export const ChekiCardForBridgeNodeMemory = ({
   uuid: memoryId,
   imageUrl,
   text,
   timeLabel: memoryTimeContext,
-  members,
+  member_profiles: members,
   ...rest
 }: Props) => {
   const [flip, setFlip] = useState(true);
