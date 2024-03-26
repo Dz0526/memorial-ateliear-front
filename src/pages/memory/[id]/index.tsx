@@ -71,11 +71,15 @@ const Memory: next.NextPageWithLayout = () => {
             <Stack spacing={4}>
               <Heading size={'sm'}>思い出のメンバー</Heading>
               <Stack spacing={4} paddingLeft={2}>
-                {data.members.map(member => (
+                {data.member_profiles.map(member => (
                   <UserCardBanner
                     key={member.uuid}
                     {...member}
-                    iconImageUrl={member.iconUrl ? `${process.env.NEXT_PUBLIC_STORAGE_ORIGIN}${member.iconUrl}` : ''}
+                    iconImageUrl={
+                      member.iconUrl
+                        ? `${process.env.NEXT_PUBLIC_STORAGE_ORIGIN}${member.iconUrl}`
+                        : ''
+                    }
                   />
                 ))}
               </Stack>

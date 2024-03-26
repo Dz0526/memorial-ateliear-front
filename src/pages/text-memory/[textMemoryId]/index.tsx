@@ -1,16 +1,16 @@
-import { Text, HStack, Heading, Box, Stack } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import { AxiosError } from "axios";
-import { authClient } from "libs/axios/client";
-import { getAuthorizationProps } from "middleware/getAuthorizationProps";
-import { GetServerSideProps, NextPageWithLayout } from "next";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { TextMemory } from "pages/feed";
-import { RainbowButton } from "shared/components/RainbowButton";
-import { UserCardBanner } from "shared/components/feed/UserCardBanner";
-import { BackAndKebabHeader } from "shared/components/layouts/BackAndKebabHeader";
-import { Layout } from "shared/components/layouts/Layout";
+import { Text, HStack, Heading, Box, Stack } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { authClient } from 'libs/axios/client';
+import { getAuthorizationProps } from 'middleware/getAuthorizationProps';
+import { GetServerSideProps, NextPageWithLayout } from 'next';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { TextMemory } from 'pages/feed';
+import { RainbowButton } from 'shared/components/RainbowButton';
+import { UserCardBanner } from 'shared/components/feed/UserCardBanner';
+import { BackAndKebabHeader } from 'shared/components/layouts/BackAndKebabHeader';
+import { Layout } from 'shared/components/layouts/Layout';
 
 const TextMemoryDetail: NextPageWithLayout = () => {
   const router = useRouter();
@@ -58,11 +58,15 @@ const TextMemoryDetail: NextPageWithLayout = () => {
             <Stack spacing={4}>
               <Heading size={'sm'}>思い出のメンバー</Heading>
               <Stack spacing={4} paddingLeft={2}>
-                {data.members.map(member => (
+                {data.member_profiles.map(member => (
                   <UserCardBanner
                     key={member.uuid}
                     {...member}
-                    iconImageUrl={member.iconUrl ? `${process.env.NEXT_PUBLIC_STORAGE_ORIGIN}${member.iconUrl}` : ''}
+                    iconImageUrl={
+                      member.iconUrl
+                        ? `${process.env.NEXT_PUBLIC_STORAGE_ORIGIN}${member.iconUrl}`
+                        : ''
+                    }
                   />
                 ))}
               </Stack>
@@ -78,10 +82,9 @@ const TextMemoryDetail: NextPageWithLayout = () => {
       )}
     </Box>
   );
-}
+};
 TextMemoryDetail.getLayout = page => <Layout>{page}</Layout>;
 
-export const getServerSideProps: GetServerSideProps =
-  getAuthorizationProps;
+export const getServerSideProps: GetServerSideProps = getAuthorizationProps;
 
-export default TextMemoryDetail
+export default TextMemoryDetail;

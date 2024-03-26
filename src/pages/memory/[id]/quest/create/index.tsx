@@ -57,17 +57,17 @@ const QuestCreate: NextPageWithLayout = () => {
     SuggestBridgeRequirements[],
     AxiosError
   >({
-    queryKey: ['suggest-bridge-requirements'],
+    queryKey: ['suggest-quest-requirements'],
     queryFn: () =>
       authClient(localStorage.getItem('access-token') as string)
-        .get<SuggestBridgeRequirements[]>('/bridge-requirements/suggest')
+        .get<SuggestBridgeRequirements[]>('/quest-requirements/suggest')
         .then(res => res.data),
   });
 
   const mutation = useMutation({
     mutationFn: (input: CreateBridgeInput) =>
       authClient(localStorage.getItem('access-token') as string)
-        .post('/bridges/', input)
+        .post('/quests/', input)
         .then(res => res.data),
     onSuccess: data => {
       setServerErrorMessage('');

@@ -15,7 +15,7 @@ import { Layout } from 'shared/components/layouts/Layout';
 import { AxiosError } from 'axios';
 import { getAuthorizationProps } from 'middleware/getAuthorizationProps';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { BridgeMemory } from 'pages/feed';
+import { QuestAchievedMemory } from 'pages/feed';
 import { useRouter } from 'next/router';
 import { authClient } from 'libs/axios/client';
 import { RainbowButton } from 'shared/components/RainbowButton';
@@ -44,11 +44,11 @@ const QuestCreate: NextPageWithLayout = () => {
   const { register, setValue, control, getValues, handleSubmit } =
     useCreateBridgeForm();
 
-  const { data: memoryDetail } = useQuery<BridgeMemory, AxiosError>({
-    queryKey: [`bridge-memory-detail-${uuid}`],
+  const { data: memoryDetail } = useQuery<QuestAchievedMemory, AxiosError>({
+    queryKey: [`quest-achievement-memories-${uuid}`],
     queryFn: () =>
       authClient(localStorage.getItem('access-token') as string)
-        .get<BridgeMemory>(`/bridge-node-memories/${uuid}`)
+        .get<QuestAchievedMemory>(`/quest-achievement-memories/${uuid}`)
         .then(res => res.data),
     enabled: !!uuid,
   });
@@ -57,17 +57,17 @@ const QuestCreate: NextPageWithLayout = () => {
     SuggestBridgeRequirements[],
     AxiosError
   >({
-    queryKey: ['suggest-bridge-requirements'],
+    queryKey: ['suggest-quest-requirements'],
     queryFn: () =>
       authClient(localStorage.getItem('access-token') as string)
-        .get<SuggestBridgeRequirements[]>('/bridge-requirements/suggest')
+        .get<SuggestBridgeRequirements[]>('/quest-requirements/suggest')
         .then(res => res.data),
   });
 
   const mutation = useMutation({
     mutationFn: (input: CreateBridgeInput) =>
       authClient(localStorage.getItem('access-token') as string)
-        .post('/bridges/', input)
+        .post('/quests/', input)
         .then(res => res.data),
     onSuccess: data => {
       setServerErrorMessage('');

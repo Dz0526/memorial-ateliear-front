@@ -15,7 +15,7 @@ import { motion } from 'framer-motion';
 import NextLink from 'next/link';
 import React, { useState } from 'react';
 import { UserCardBanner } from './UserCardBanner';
-import { ImageMemory, Member, BridgeMemory } from 'pages/feed';
+import { ImageMemory, Member } from 'pages/feed';
 
 type Props = ImageMemory & BoxProps;
 
@@ -24,7 +24,7 @@ export const ChekiCard = ({
   imageUrl,
   caption,
   timeLabel: memoryTimeContext,
-  members,
+  member_profiles: members,
   ...rest
 }: Props) => {
   const [flip, setFlip] = useState(true);
@@ -133,7 +133,11 @@ const BackFace = ({ memoryId, members }: BackFaceProps) => {
               <UserCardBanner
                 key={member.uuid}
                 screenName={member.screenName}
-                iconImageUrl={member.iconUrl ? `${process.env.NEXT_PUBLIC_STORAGE_ORIGIN}${member.iconUrl}` : ''}
+                iconImageUrl={
+                  member.iconUrl
+                    ? `${process.env.NEXT_PUBLIC_STORAGE_ORIGIN}${member.iconUrl}`
+                    : ''
+                }
               />
             ))}
           </Stack>

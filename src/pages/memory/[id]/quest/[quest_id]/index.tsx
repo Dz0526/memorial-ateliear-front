@@ -32,7 +32,7 @@ import { useRouter } from 'next/router';
 import { AxiosError } from 'axios';
 import { authClient, authClientForm } from 'libs/axios/client';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Bridge } from 'pages/quest';
+import { Quest } from 'pages/quest';
 import { ChekiCard } from 'shared/components/feed/ChekiCard';
 import { getAuthorizationProps } from 'middleware/getAuthorizationProps';
 
@@ -40,7 +40,7 @@ type QuestAchivementProgressContext = {
   setPage: Dispatch<SetStateAction<number>>;
   newImgSrc: string;
   setNewImgSrc: Dispatch<SetStateAction<string>>;
-  quest: Bridge;
+  quest: Quest;
   ref: MutableRefObject<File | undefined>;
 };
 
@@ -55,11 +55,11 @@ const QuestAchivementProgress: NextPageWithLayout = () => {
   const [newImgSrc, setNewImgSrc] = useState<string>('');
   const router = useRouter();
   const quest_uuid = router.query.quest_id;
-  const { data: quest } = useQuery<Bridge, AxiosError>({
+  const { data: quest } = useQuery<Quest, AxiosError>({
     queryKey: [`quet-detail-${quest_uuid}`],
     queryFn: () =>
       authClient(localStorage.getItem('access-token') as string)
-        .get<Bridge>(`/bridges/${quest_uuid}`)
+        .get<Quest>(`/quests/${quest_uuid}`)
         .then(res => res.data),
     enabled: !!quest_uuid,
   });
@@ -176,7 +176,7 @@ const animationPrev = `${animationKeyframesPrev} 4s linear`;
 const animationNext = `${animationKeyframesNext} 4s linear`;
 
 type CreateBridgeNodeMemoryInput = {
-  bridgeUuid: string;
+  questUuid: string;
   text: string;
   achievedRequirementUuids: string[];
   memberUuids: string[];
@@ -194,7 +194,7 @@ const QuestAchivementJudge = () => {
   const mutation = useMutation({
     mutationFn: (input: FormData) =>
       authClientForm(localStorage.getItem('access-token') as string)
-        .post('/bridge-node-memories/', input)
+        .post('/quest-achievement-memories/', input)
         .then(res => res.data),
     onSuccess: data => {
       console.log(data);
@@ -209,12 +209,14 @@ const QuestAchivementJudge = () => {
     if (ref.current && checked.every(check => check == true)) {
       console.log(ref.current);
       const schema: CreateBridgeNodeMemoryInput = {
-        bridgeUuid: quest.uuid,
+        questUuid: quest.uuid,
         text: `${quest.name}達成`,
         achievedRequirementUuids: quest.requirements.map(
           requirement => requirement.uuid,
         ),
-        memberUuids: quest.originMemory.members.map(member => member.uuid),
+        memberUuids: quest.originMemory.member_profiles.map(
+          member => member.uuid,
+        ),
         timeLabel: new Date().getFullYear().toString(),
         timestamp: new Date(),
         description: '',

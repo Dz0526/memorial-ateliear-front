@@ -78,8 +78,13 @@ const MemoryCreate: NextPageWithLayout = () => {
 
   const onSubmit = (args: CreateImageMemoryArgs) => {
     const formData = new FormData();
-    const { image, ...rest } = args;
-    const value = { ...rest, timestamp: new Date(), description: '' };
+    const { image, members, ...rest } = args;
+    const value = {
+      ...rest,
+      timestamp: new Date(),
+      description: '',
+      memberProfiles: members,
+    };
     formData.append('image', args.image);
     formData.append('schema', JSON.stringify(value));
     mutation.mutate(formData);
